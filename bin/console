@@ -7,7 +7,7 @@ use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Debug\Debug;
 
 set_time_limit(0);
-umask(0000);
+
 //ini_set('display_errors', 1);
 
 require dirname(__DIR__).'/vendor/autoload.php';

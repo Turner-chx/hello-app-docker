@@ -47,6 +47,7 @@ class AppImportArticlesCommand extends Command
         ini_set('memory_limit', '8192M');
 
         $filename = 'ArticlesIntranet.csv';
+        $manager = $this->em;
 
         $handle = fopen($this->projectDir . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . $filename, 'rb+');
         $i = 0;
@@ -55,156 +56,86 @@ class AppImportArticlesCommand extends Command
         if (false === $handle) {
             return false;
         }
-
-        while (false !== ($dataCsv = fgetcsv($handle, 1024, ';'))) {
-            $dataCsv = array_map('trim', $dataCsv);
-            $dataCsv = array_map('utf8_decode', $dataCsv);
-
-            $data = $this->csvHandler->getArrayCsv($dataCsv);
-
-            if (isset($data['A']) && isset($data['B']) && isset($data['C'])) {
-                $codeOem = isset($data['N']) ? $data['N'] : null;
-
-                if (null !== $codeOem && '' !== $codeOem) {
-                    $oem = $this->em->getRepository(Oem::class)->findOneBy([
-                        'oem' => $codeOem
-                    ]);
-
-                    if (null === $oem) {
-                        $oem = new Oem();
-                        $oem->setOem($codeOem);
-
-                        $this->em->persist($oem);
-
-                        if ($j % $batchSize === 0) {
-                            $this->em->flush();
-                        }
-                        $j++;
-                    }
-                }
+        fgetcsv($handle, 1024, ';');
+        while (false !== ($data = fgetcsv($handle, 1024, ';'))) {
+            $gamme = null;
+            $productType = null;
+            $brand = null;
+            $data = array_map('trim', $data);
+            $data = array_map('utf8_decode', $data);
+            $ref = $data[0] ?? null;
+            $des = $data[1] ?? null;
+            $desAbr = $data[2] ?? null;
+            $ean = $data[5] ?? null;
+            $brandLama = substr($data[4] ?? '', -2);
+            $productTypeLama = substr($data[4] ?? '', 0, 3);
+            $gammeLama = $data[3] ?? null;
+            $brand = $manager->getRepository(Brand::class)
+                ->findOneBy([
+                    'codeLama' => $brandLama
+                ]);
+            if (null === $brand) {
+                $brand = new Brand();
+                $brand->setStatus(true);
+                $brand->setBrand($brandLama);
+                $brand->setCodeLama($brandLama);
+                $manager->persist($brand);
+                $manager->flush();
             }
-        }
-        $this->em->flush();
-        fclose($handle);
-
-        $handle = fopen($this->projectDir . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . $filename, 'rb+');
-        $i = 0;
-        $batchSize = 250;
-        if (false === $handle) {
-            return false;
-        }
-
-        while (false !== ($dataCsv = fgetcsv($handle, 1024, ';'))) {
-            $dataCsv = array_map('trim', $dataCsv);
-            $dataCsv = array_map('utf8_decode', $dataCsv);
-
-            $data = $this->csvHandler->getArrayCsv($dataCsv);
-
-            if (isset($data['A']) && isset($data['B']) && isset($data['C'])) {
-                $ref = isset($data['A']) ? $data['A'] : null;
-                $des = isset($data['B']) ? $data['B'] : null;
-                $desAbr = isset($data['C']) ? $data['C'] : null;
-                $codeColor = isset($data['Q']) ? $data['Q'] : null;
-                $codeOem = isset($data['N']) ? $data['N'] : null;
-                $codeGamme = isset($data['E']) ? $data['E'] : null;
-
-                $statusNumber = isset($data['U']) ? (string)$data['U'] : '0';
-                switch ($statusNumber) {
-                    case '2':
-                        $status = true;
-                        break;
-                    case '1':
-                    case '0':
-                    default:
-                        $status = false;
-                        break;
-                }
-
-                $columnD = $data['D'];
-                $codeLama = isset($columnD) ? substr($columnD, 0, 3) : null;
-                $codeBrand = null;
-
-                if (strlen($columnD) === 8) {
-                    $codeBrand = substr($columnD, 6, 2);
-                }
-
-                $ean = isset($data['G']) ? $data['G'] : null;
-                $article = $this->em->getRepository(Article::class)
+            $productType = $manager->getRepository(ProductType::class)
+                ->findOneBy([
+                    'codeLama' => $productTypeLama
+                ]);
+            if (null === $productType) {
+                $productType = new ProductType();
+                $productType->setCodeLama($productTypeLama);
+                $productType->setType($productTypeLama);
+                $manager->persist($productType);
+                $manager->flush();
+            }
+            if (null !== $gammeLama) {
+                $gamme = $manager->getRepository(Gamme::class)
                     ->findOneBy([
-                        'reference' => $ref
+                        'gamme' => $gammeLama
                     ]);
-                if (null === $article && null !== $ref && null !== $des && null !== $desAbr) {
+                if (null === $gamme) {
+                    $gamme = new Gamme();
+                    $gamme->setGamme($gammeLama);
+                    $manager->persist($gamme);
+                    $manager->flush();
+                }
+            }
+            $article = $manager->getRepository(Article::class)
+                ->findOneBy([
+                    'reference' => $ref
+                ]);
+            if (null !== $ref && null !== $des && null !== $desAbr) {
+                if (null === $article) {
                     $article = new Article();
-                    $article->setReference($ref);
-                    $article->setDesignation($des);
-                    $article->setDesignationAbridged($desAbr);
-                    $article->setEan($ean);
-                    $article->setStatus($status);
-
-                    if (null !== $codeLama && '' !== $codeLama) {
-                        /** @var ProductType $productType */
-                        $productType = $this->em->getRepository(ProductType::class)->findOneBy([
-                            'codeLama' => $codeLama
-                        ]);
-
-                        if (null !== $productType) {
-                            $article->setProductType($productType);
-                        }
-                    }
-
-                    if (null !== $codeBrand) {
-                        /** @var Brand $brand */
-                        $brand = $this->em->getRepository(Brand::class)->findOneBy([
-                            'codeLama' => $codeBrand
-                        ]);
-
-                        if (null !== $brand) {
-                            $article->setBrand($brand);
-                        }
-                    }
-
-                    if (null !== $codeColor) {
-                        /** @var Color $color */
-                        $color = $this->em->getRepository(Color::class)->findOneBy([
-                            'idLama' => $codeColor
-                        ]);
-
-                        if (null !== $color) {
-                            $article->setColor($color);
-                        }
-                    }
-
-                    if (null !== $codeOem && '' !== $codeOem) {
-                        /** @var Oem $oem */
-                        $oem = $this->em->getRepository(Oem::class)->findOneBy([
-                            'oem' => $codeOem
-                        ]);
-
-                        if (null !== $oem) {
-                            $article->setOem($oem);
-                        }
-                    }
-
-                    if (null !== $codeGamme && '' !== $codeGamme) {
-                        /** @var Gamme $gamme */
-                        $gamme = $this->em->getRepository(Gamme::class)->findOneBy([
-                            'gamme' => $codeGamme
-                        ]);
-
-                        if (null !== $gamme) {
-                            $article->setGamme($gamme);
-                        }
-                    }
-
-                    $this->em->persist($article);
                 }
-                if ($i % $batchSize === 0) {
-                    $this->em->flush();
+                $article->setReference($ref);
+                $article->setDesignation($des);
+                $article->setDesignationAbridged($desAbr);
+                $article->setEan($ean);
+                $article->setStatus(true);
+                if (null !== $gamme) {
+                    $article->setGamme($gamme);
                 }
-                $i++;
+                if (null !== $productType) {
+                    $article->setProductType($productType);
+                }
+                if (null !== $brand) {
+                    $article->setBrand($brand);
+                }
+
+                $manager->persist($article);
+            }
+            $i++;
+            if ($i % $batchSize === 0) {
+                $manager->flush();
             }
         }
-        $this->em->flush();
+        $manager->flush();
         fclose($handle);
 
         return  1;

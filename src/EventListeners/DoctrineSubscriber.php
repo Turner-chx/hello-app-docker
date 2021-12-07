@@ -9,6 +9,7 @@
 namespace App\EventListeners;
 
 
+use App\Entity\Article;
 use App\Entity\Messaging;
 use App\Entity\Sav;
 use App\Entity\SavHistory;
@@ -17,6 +18,7 @@ use App\Enum\HistoryEventsEnum;
 use App\Enum\SenderFileEnum;
 use App\Handler\RequestForSavHandler;
 use Doctrine\Common\EventSubscriber;
+use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Events;
@@ -74,9 +76,12 @@ class DoctrineSubscriber implements EventSubscriber
         }
     }
 
-    public function postUpdate()
+    public function postUpdate(LifecycleEventArgs $args)
     {
-        $this->em->flush();
+        $entity = $args->getObject();
+        if (!($entity instanceof Article)) {
+            $this->em->flush();
+        }
     }
 
     /**

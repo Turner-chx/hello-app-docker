@@ -16,7 +16,6 @@ use App\Form\MyCLabsEnumType;
 use App\Handler\RequestForSavHandler;
 use App\Library\Autocompleter;
 use App\Mailer\Mailer;
-use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -55,7 +54,7 @@ final class SavAdmin extends AbstractAdmin
     {
         return array_flip([
             'id' => 'ID',
-            'createdAt' => 'Date creation',
+            'createdAtFrench' => 'Date creation',
             'overAt' => 'Date cloture',
             'family' => 'Famille',
             'replacementProduct' => 'Produits remplacement',
@@ -65,7 +64,7 @@ final class SavAdmin extends AbstractAdmin
             'isReplaced' => 'Remplace',
             'source' => 'Source',
             'dealer' => 'Revendeur',
-            'comment' => 'Commentaire'
+            'descriptionExport' => 'Commentaire'
         ]);
     }
 

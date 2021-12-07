@@ -206,6 +206,16 @@ class Sav
         $this->emailSent = false;
     }
 
+    public function getDescriptionExport()
+    {
+        return str_replace([',', "\r", "\n", "\t", ';'], ' ', $this->getDescription());
+    }
+
+    public function getCreatedAtFrench(): string
+    {
+        return null !== $this->getCreatedAt() ? $this->getCreatedAt()->format('d/m/Y') : '';
+    }
+
     public function getCommentLight(): ?string
     {
         return strip_tags(str_replace([',', ';'], ' ', $this->getComment()));

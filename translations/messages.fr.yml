@@ -57,7 +57,7 @@ app:
       product_type: Types de produit
       messaging: Messages
       sav: SAV
-      sav_new: Nouveaux SAV
+      sav_new: SAV en cours
       sav_article: Article SAV
       sav_history: Historiques SAV
       source: Sources

@@ -67,7 +67,7 @@ final class SavNewAdmin extends AbstractAdmin
     {
         return array_flip([
             'id' => 'ID',
-            'createdAt' => 'Date creation',
+            'createdAtFrench' => 'Date creation',
             'overAt' => 'Date cloture',
             'family' => 'Famille',
             'replacementProduct' => 'Produits remplacement',
@@ -77,7 +77,7 @@ final class SavNewAdmin extends AbstractAdmin
             'isReplaced' => 'Remplace',
             'source' => 'Source',
             'dealer' => 'Revendeur',
-            'comment' => 'Commentaire'
+            'descriptionExport' => 'Commentaire'
         ]);
     }
 

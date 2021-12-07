@@ -58,7 +58,18 @@ final class ArticleAdmin extends AbstractAdmin
 
     protected function configureRoutes(RouteCollection $collection)
     {
+        parent::configureRoutes($collection);
         $collection->remove('create');
         $collection->remove('delete');
+        $collection->add('importArticles');
+    }
+
+    public function configureActionButtons($action, $object = null): array
+    {
+        $list = parent::configureActionButtons($action, $object);
+
+        $list['import']['template'] = 'admin/article/action/import.html.twig';
+
+        return $list;
     }
 }

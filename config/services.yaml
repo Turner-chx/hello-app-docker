@@ -76,17 +76,6 @@ services:
       - { name: doctrine.event_subscriber, connection: default }
   ########### END LISTENERS ##########
 
-  ########### COMMANDS ###############
-  App\Command\AppImportArticlesCommand:
-    tags:
-      - { name: 'console.command', command: 'app:import:articles' }
-    arguments: ['@doctrine.orm.entity_manager', '%kernel.project_dir%', '%db_name%', '%db_user%', '%db_pwd%']
-
-  App\Command\AppImportArticlesDivaltoCommand:
-    tags:
-      - { name: 'console.command', command: 'app:import:articles-divalto' }
-    arguments: ['@doctrine.orm.entity_manager', '%kernel.project_dir%']
-
   App\Command\AppImportProductionsCommand:
     tags:
       - { name: 'console.command', command: 'app:import:productions' }

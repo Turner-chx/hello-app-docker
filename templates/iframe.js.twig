@@ -1,0 +1,115 @@
+$(document).ready(function () {
+    displayNatures();
+    $(document).on('focusout', '#request_for_sav_serialNumber', function () {
+        let serialNumber = $('#request_for_sav_serialNumber').val();
+
+        if (serialNumber != '') {
+            $.ajax({
+                url: $('#request_for_sav_serialNumber').data('action'),
+                type: 'POST',
+                data: {
+                    serialNumber: serialNumber
+                },
+                success: function (data) {
+                    if (data.success) {
+                        $('#find_serial_number').removeClass('d-none');
+                        $('#find_serial_number').addClass(data['addClass']);
+                        $('#find_serial_number').removeClass(data['removeClass']);
+                        $('#find_serial_number').html(data['message']);
+                    }
+                }
+            })
+        } else {
+            $('#find_serial_number').addClass('d-none');
+            $('#find_serial_number').html('');
+
+        }
+    })
+
+    changeCustomerNameLabel();
+    $(document).on('change', '#request_for_sav_clientType', function () {
+        changeCustomerNameLabel();
+    });
+
+    if ($('.check-natures').length > 0) {
+        displayNatures();
+    }
+
+    if ($('#request_for_sav_clientType').val() != 'dealer') {
+        $('#dealer_reference').addClass('d-none');
+        $('#request_for_sav_dealerReference').parent('div').find('label').removeClass('required');
+    } else {
+        $('#dealer_reference').removeClass('d-none');
+        $('#request_for_sav_dealerReference').parent('div').find('label').addClass('required');
+    }
+
+    $(document).on('click', '#request_for_sav_submit', function() {
+        let checked = $('input[type=checkbox]:checked').length;
+
+        if(checked <= 0) {
+            alert('Veuillez renseigner les natures');
+            return false;
+        }
+
+    });
+
+    let displayImei = {{ display_imei }};
+    if (displayImei) {
+        let $imei = $('#request_for_sav_imeiNumber');
+        if ($imei.length > 0) {
+            $imei.prop('required', true);
+            $imei.prop('pattern', '\\d*');
+            $imei.prop('maxlength', 15);
+            $('label[for="request_for_sav_imeiNumber"]').addClass('required');
+        }
+    }
+
+
+    $(document).on('change', '#request_for_sav_serialNumber', function () {
+        displayNatures();
+    });
+
+    $(document).on('change', '#request_for_sav_clientType', function () {
+        if ($('#request_for_sav_clientType').val() != 'dealer') {
+            $('#dealer_reference').addClass('d-none');
+            $('#request_for_sav_dealerReference').parent('div').find('label').removeClass('required');
+        } else {
+            $('#dealer_reference').removeClass('d-none');
+            $('#request_for_sav_dealerReference').parent('div').find('label').addClass('required');
+        }
+    });
+
+    function displayNatures() {
+        let production = $('#request_for_sav_serialNumber').val();
+        let source = {{ idSource }};
+
+        $('input[name="request_for_sav[natures][]"]').each(function () {
+            $(this).parent('div').addClass('d-none');
+        });
+
+        $.ajax({
+            url: '{{ path('check_natures') }}',
+            type: 'POST',
+            data: {
+                production: production,
+                source: source
+            },
+            success: function (data) {
+                if (data.success) {
+                    for (let nature in data.natures) {
+                        $('#request_for_sav_natures_' + data.natures[nature]).parent('div').removeClass('d-none');
+                    }
+                }
+            }
+        })
+    }
+});
+
+function changeCustomerNameLabel() {
+    var label = $('label[for="'+ $('#request_for_sav_customerInfos_name').attr('id') +'"]');
+    if ($('#request_for_sav_clientType').val() == 'dealer') {
+        label.text('Raison Sociale');
+    } else {
+        label.text('Nom et Prénom');
+    }
+}

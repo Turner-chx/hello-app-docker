@@ -1,0 +1,12 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    <div>
+        {% if null != object.image and null != object.image.name %}
+            <img style="height:70px;" class="img-responsive" src="{{ vich_uploader_asset(object.image, 'file') }}"
+                 alt="{{ object.image.name }}"/>
+        {% else %}
+            <span>{{ 'app.entity.Source.field.no_image'|trans }}</span>
+        {% endif %}
+    </div>
+{% endblock %}

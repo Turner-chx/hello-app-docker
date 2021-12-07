@@ -1,0 +1,40 @@
+{% set source = sav_handler.source %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap-datepicker.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('font-awesome/css/all.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/select2.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/select2-bootstrap.min.css') }}">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+    <title>{{ source.name }}</title>
+    <meta name="description"
+          content="{% block meta_description %}{% endblock %}"/>
+
+    {% block stylesheets %}{% endblock %}
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/frontend/logo.svg') }}">
+</head>
+<body>
+{% for label, messages in app.flashes %}
+    {% for message in messages %}
+        <div class="auto-margin text-center alert alert-{{ label }}">
+            {{ message|trans|raw }}
+        </div>
+    {% endfor %}
+{% endfor %}
+{% block body %}{% endblock %}
+<script src="{{ asset('js/jquery.min.js') }}"></script>
+<script src="{{ asset('js/jquery-ui.min.js') }}"></script>
+<script src="{{ asset('js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
+<script src="{{ asset('font-awesome/js/all.min.js') }}"></script>
+<script src="{{ asset('js/select2.js') }}"></script>
+<script src="{{ asset('js/i18n/fr.js') }}"></script>
+<script src="{{ asset('bundles/tetranzselect2entity/js/select2entity.js') }}"></script>
+<script src="{{ asset('js/admin.js') }}"></script>
+{% block javascripts %}{% endblock %}
+</body>
+</html>

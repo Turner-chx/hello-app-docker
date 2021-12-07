@@ -1,0 +1,547 @@
+app:
+  password_user:
+    email: Email
+    password: Mot de passe
+    submit: Valider
+  form:
+    title:
+      meta_title: Demande de SAV
+      product: Produit(s)
+      contact: Vos informations
+      additional_information: Informations complémentaires
+      description: Commentaire libre
+  enum:
+    client_type:
+      dealer: Revendeur
+      customer: Client Final
+    sav_type:
+      voucher: Avoir (panne au déballage)
+      repair: Réparation
+      resale: Remise en vente
+    carrier:
+      chronopost: Chronopost
+      colissimo: Colissimo
+      colis_prive: Colis privé
+      gls: GLS
+      tnt: TNT
+    history_event:
+      edit: Modification
+      new: Création
+      replace: Remplacement
+      evolution: Évolution
+    role:
+      supplier: Rôle sous-traitant
+      operator: Rôle opétateur
+      admin: Rôle admin
+    sender_file:
+      dealer: revendeur
+      customer: client
+      lama: SAV
+    over_status:
+      over: Cloturé
+      open: Ouvert
+
+
+  admin:
+    menu:
+      article: Produits
+      brand: Marques
+      color: Couleurs
+      customer: Clients Finaux
+      dealer: Revendeurs
+      gamme: Boitages produits
+      nature_setting: Natures des problèmes
+      oem: OEM
+      parameter_article: Paramètres produits
+      parameter_sav: Paramètres SAV
+      product_type: Types de produit
+      messaging: Messages
+      sav: SAV
+      sav_new: SAV en cours
+      sav_article: Article SAV
+      sav_history: Historiques SAV
+      source: Sources
+      status_setting: États
+      user: Utilisateurs
+      user_title: Utilisateurs
+
+  base:
+    footer:
+      copyright: "©"
+
+  divalto:
+    sav:
+      send_replaced_production: Envoyer dans Divalto
+      send_email: Mail commercial
+      success: Sav envoyé dans Divalto %divaltoNumber%
+      error: Le SAV n'a pas pu être envoyé dans Divalto
+      divalto_not_null: Le numéro de divalto existe déjà
+      client_false: L'accès à Divalto à échoué
+      dealer_null: Aucun revendeur n'est renseigné
+      customer_null: Aucun client final n'est renseigné
+      article_null: Aucun produit n'est relié au SAV
+
+  error:
+    production:
+      lost: Production introuvable
+      not_authorized: Vous n'êtes pas autorisé
+      article: Aucun produit relié à la production
+      not_serial_number_lmeco: Il n'y a pas de numéro de série
+    sav:
+      lost: Sav introuvable
+      not_authorized: Vous n'êtes pas autorisé
+    user:
+      not_exist: L'utilistateur n'existe pas
+      not_authorized: Vous n'êtes pas autorisé
+    request_for_sav:
+      not_authorized: Vous n'êtes pas autorisé
+      serial_number_not_found: Le numéro de série entré (serial_number) n'a pas été trouvé. Vous pouvez tout de même envoyer la demande de SAV.
+      serial_number_found: Le numéro de série (serial_number) a bien été trouvé.
+      no_dealer: Pas de Revendeur trouvé
+
+  login:
+    title: Se connecter à mon compte
+    remember_me: Se souvenir de moi
+    error: Identifiants invalides
+    already_logged_in: Vous êtes déjà connecté
+
+  mail:
+    sav_confirmation:
+      name: Demande envoyée
+      new_sav: Demande de SAV envoyée
+    sav_new:
+      name: Votre demande de SAV vient d'être prise en charge par nos services
+      new_sav: Votre Sav
+    sav_send_link:
+      name: Votre lien pour suivre votre SAV
+      new_sav: Votre Sav
+    sav_recap:
+      name: Nouvelle demande de SAV
+      new_recap: Nouvelle demande de SAV
+      customer_infos: Informations client
+      sav_infos: Informations SAV
+      sav_link: Lien pour accéder à la demande de SAV
+      request: "Le %client% %name% demande un SAV"
+    sav_message:
+      name: Nouveau message (#%savId%)
+      new_message: Nouveau message (#%savId%)
+      message_intro: Vous avez reçu un message de %sender% à %date%
+      sav_message_link: Lien pour accéder au message
+    mail_commercial:
+      name1: "SAV AVEC ECHANGE – REF DOSSIER %idsav%"
+      name2: "SAV – REF DOSSIER %idsav%"
+      name3: "SAV AVEC ECHANGE – REF DOSSIER %idsav%"
+      name4: "SAV – REF DOSSIER %idsav%"
+
+  entity:
+    Color:
+      name: Couleur
+      new: Nouvelle couleur
+      field:
+        idLama: Code couleur
+        color: Correspondance code Divalto
+        name: Nom couleur
+        isPack: Est définie pour un pack ?
+        image: Image
+    Brand:
+      name: Marque
+      new: Nouvelle marque
+      field:
+        brand: Nom marque
+        codeLama: Correspondance Divalto
+    User:
+      name: Utilisateurs
+      new: Nouvel utilisateur
+      edit: Modifier
+      list: Liste des utilisateurs
+      action: Action
+      form:
+        user_information: Informations utilisateur
+        user_login: Identifiants
+        name: Ajouter / Modifier utilisateur
+      field:
+        id: id
+        firstName: Prénom
+        lastName: Nom
+        email: Mail
+        password: Mot de passe
+        plainPassword: Mot de passe
+        createdAt: Créé le
+        updatedAt: Mise à jour le
+        role: Rôle
+        byDefault: Par défaut ?
+        status: Etat
+        display_roles: Roles
+    Oem:
+      new: Nouvel Oem
+      name: Oem
+      field:
+        oem: Référence Oem
+    Gamme:
+      name: Boitage
+      new: Nouveau Boitage
+      field:
+        gamme: Nom
+        slug: Slug
+    Customer:
+      name: Clients Finaux
+      edit: Modifier
+      list: Liste des clients finaux
+      form:
+        customer_information: Informations client
+        customer_address: Adresse
+        customer_extra: Informations supplémentaires
+        name: Modifier client
+      field:
+        id: id
+        name: Raison sociale - Nom Prénom
+        email: Mail
+        phoneNumber: Téléphone
+        address: Adresse
+        additionalAddress: Adresse complémentaire
+        postalCode: Code postal
+        city: Ville
+        country: Pays
+        store: Magasin d'achat ou site internet
+        customerContact: Contact client
+        createdAt: Créé le
+        type: Type
+    Dealer:
+      name: Revendeurs
+      new: Nouveau revendeur
+      edit: Modifier
+      list: Liste des revendeurs
+      form:
+        dealer_information: Informations Revendeur
+        dealer_address: Adresse
+        dealer_extra: Informations supplémentaires
+        name: Ajouter / Modifier revendeur
+      field:
+        id: id
+        name: Nom
+        email: Mail
+        address: Adresse
+        additionalAddress: Adresse complémentaire
+        postalCode: Code postal
+        city: Ville
+        country: Pays
+        dealerCode: Code Revendeur
+        salesmanName: Commercial
+        createdAt: Créé le
+        type: Type
+        status: État
+    Supplier:
+      name: Fournisseurs
+      new: Nouveau fournisseur
+      edit: Modifier
+      list: Liste des fournisseurs
+      form:
+        dealer_information: Informations fournisseur
+        dealer_address: Adresse
+        dealer_extra: Informations supplémentaires
+        dealer_contact: Contacts
+        name: Ajouter / Modifier fournisseur
+      field:
+        id.name: id
+        name.name: Nom
+        email.name: Mail
+        address.name: Adresse
+        additional_address.name: Adresse complémentaire
+        postal_code.name: Code postal
+        city.name: Ville
+        country.name: Pays
+        phone_number.name: Téléphone
+        fax_number.name: Fax
+        website.name: Site internet
+        supplier_code.name: Code Revendeur
+        siret.name: SIRET
+        created_at.name: Créé le
+    StatusSetting:
+      name: États
+      new: Nouvel état
+      edit: Modifier
+      list: Liste des états
+      form:
+        status_setting_wrench: Paramètres
+        name: Ajouter / Modifier état
+      field:
+        id: id
+        setting: État SAV
+        status: Activé
+        by_default: Par défaut ?
+        display_divalto_replace_button: Afficher bouton Divalto ?
+        over: Cloturé ?
+        color: Couleur d'affichage
+    Stats:
+      name: Statistiques
+      date_start: Date de début
+      date_end: Date de fin
+    NatureSetting:
+      name: Natures des problèmes
+      new: Nouvelle nature
+      edit: Modifier
+      list: Liste des natures
+      form:
+        nature_setting_wrench: Paramètres
+        name: Ajouter / Modifier nature
+      field:
+        id: id
+        setting: Nature SAV
+        code_divalto: Code Divalto
+        status: Activé
+    Source:
+      name: Sources
+      new: Nouvelle source
+      edit: Modifier
+      list: Liste des sources
+      form:
+        source: Source
+        name: Ajouter / Modifier source
+        imei: N° IMEI
+      field:
+        id: id
+        name: Nom
+        slug: Slug
+        color: Couleur d'affichage
+        gamme: Boitage(s) autorisés pour la recherche
+        dealer: Revendeur
+        image: Logo du magasin
+        no_image: Aucun logo pour ce magasin
+        default_source: Source par défaut
+        dealer_email: Mail revendeur
+        recipients: Mails Lama
+    Group:
+      name: Groupes d'utilisateurs
+      new: Nouveau groupe
+      edit: Modifier
+      list: Liste des groupes
+      form:
+        group: Groupes
+        name: Ajouter / Modifier groupe
+      field:
+        id.name: id
+        name.name: Nom
+    ProductType:
+      name: Type de produit
+      new: Nouveau type de produit
+      edit: Modifier
+      list: Liste des types de produit
+      form:
+        product_type: Type de produit
+        status: État
+        name: Ajouter / Modifier type de produit
+      field:
+        id: id
+        type: Type
+        status: Famille de produit
+        slug: Slug
+        codeLama: Correspondance Divalto
+    Article:
+      name: Produit
+      new: Nouvel produit
+      edit: Modifier
+      list: Liste des produits
+      form:
+        article_info: Information
+        description: Description
+        name: Modifier produit
+      field:
+        id: id
+        reference: Référence
+        designation: Désignation
+        designationAbridged: Désignation abregée
+        ean: EAN
+        stock: Stock
+        productType: Famille
+        brand: Marque
+        gamme: Boitage
+        oem: Oem
+        color: Couleur
+        status: Activé
+    SavArticle:
+      form:
+        sav.name: Sav
+        product: Produit
+        colors: Couleurs
+        natureSettings: Nature(s) du problème
+        fileUnknown: Photo produit
+        unknownArticle: Référence d'article
+        filesProof: Fichier preuve
+        serialNumber: N° de série 1 (commençant par F00...)
+        serialNumber2: N° de série 2 (XXXX)
+        close: Fermer
+    Sav:
+      divalto:
+        unknown_customer: Client inconnu
+        unknown_dealer: Merci de renseigner un revendeur
+        unknown_product: Produit inconnu
+      action:
+        send_link:
+          error:
+            unknown_sav: Sav introuvable
+        export:
+          csv: Exporter en CSV
+      name: SAV
+      edit: Modifier
+      new: Nouveau SAV
+      list: Liste des SAV
+      form:
+        dysfonctionning_proof: Preuve(s) de dysfonctionnement
+        customer_not_seeing: En vert ce que le client ne voit pas
+        purchase_proof: Preuve d'achat
+        link: Lien HTTP
+        go_to_link: Accéder au lien
+        failure: Preuve défaut
+        name: 'Modifier SAV #%entity_id%'
+        info: Informations générales
+        sav_number: Numéro du SAV
+        sav_status: Statut du SAV
+        article_info: Informations du produit
+        file: Preuve(s) d'achat
+        sav: SAV
+        message: Messages
+        your_customer_info: Vos informations
+        customer_info: Contact
+        history_sav: Historique SAV
+        history_message: Historique des messages
+        additional_info: Informations complémentaires
+        description: Description du problème
+        submit: Envoyer
+        proof_of_purchase: Preuve d'achat
+        proof: Preuves
+        other: Autres
+        products: Produits
+        you_are: Vous êtes
+        request_for_sav: Demande de SAV
+        your_last_first_name: Votre nom et prénom
+        your_availability: Vos disponibilités
+        your_reference: Votre référence SAV
+      field:
+        id: Id
+        article: Produit
+        jira_link: Lien
+        customer_printer: Imprimante concernée
+        description: Commentaire libre
+        serial_number_customer: Numéro de série
+        serial_number_customer_client: Numéro de série du client
+        over: Statut terminé
+        created_at: Date du SAV
+        from: Sav du
+        to: Au
+        updated_at: Mise à jour le
+        comment: Commentaire
+        user: Opérateur
+        files: Fichiers
+        dealer: Revendeur
+        store: Magasin d'achat ou site internet
+        status_setting: État
+        source: Source
+        nature_setting: Nature du problème
+        natures_setting: Nature(s) du problème
+        article_reference: Référence Produit
+        new_savs: Nouveaux SAV
+        client_type: Type du client
+        sav_type: Type de demande
+        customer: Client
+        sub_product_type: Sous-gamme
+        customer_name: Nom Client
+        customer_email: Email Client
+        dealer_reference: Référence du Revendeur
+        is_new: Nouveau SAV
+        new_message: Messages non lus
+        divalto_number: N° commande Divalto
+        repair_date: Date à réparer
+        carrier_code: Transporteur
+        family: Famille produit
+        replacement_article: Produit(s) de remplacement
+        sav_article: Produit(s) client
+        article_image: Image produit (si le produit n'est pas trouvé)
+        article_serial_number: N° série 1
+        article_serial_number2: N° série 2
+      message:
+        required_field: Champ obligatoire
+        before: avant le
+      follow_my_sav:
+        follow_my_sav: Suivre son SAV
+        ref: "Numéro de dossier : "
+        created_at: "Date demande SAV : "
+        purchase_date: "Date d'achat : "
+        rma_code: "Code RMA : "
+        imei: "IMEI : "
+        status_setting: "État : "
+        infos_sav: Informations SAV
+        infos_article: Informations produit
+        infos_customer: Informations client
+        delivery_address: Adresse de livraison
+        details_sav: Détails SAV
+        guarantee: "Durée de la garantie : "
+        month: " mois"
+        serial_number: "Numéro de série : "
+        serial_number_lmeco: "Numéro de série : "
+        description: "Description :"
+        nature_setting: "Nature(s) :"
+        user_name: "Opérateur : "
+        dealer_name: "Revendeur : "
+        submit: Envoyer votre message
+        store: "Magasin d'achat ou site internet : "
+        send_by: "Envoyé par le "
+        upload: Charger le fichier
+        reference_dealer: "Votre référence SAV : "
+        customer:
+          name: "Nom et prénom : "
+          email: "Mail : "
+          phone_number: "Téléphone : "
+          address: "Adresse : "
+          additionel_address: "Adresse complémentaire : "
+          postale_code: "Code postal : "
+          city: "Ville : "
+          country: "Pays : "
+        history_sav:
+          event: Événement
+          date: Date
+          status: État
+          serial_number: Numéro de série
+      url_my_sav:
+        success: Votre demande a été prise en compte, vérifiez votre boite mail qui contient les informations sur votre SAV
+        url: "Vous pouvez suivre votre demande à l'adresse suivante : "
+        always_url: "Vous pouvez toujours suivre votre demande à l'adresse suivante : "
+        ref: "Votre numéro de dossier est : "
+      filter:
+        delete_filter: Supprimer
+    Messaging:
+      name: Messages
+      list: Liste des messages
+      field:
+        id: id
+        message: Message
+        new_message: Nouveau message
+        created_at: Publié le
+        updated_at: Mise à jour le
+        file: Fichier
+        user: Opérateur
+        customer: Client Final
+        dealer: Revendeur
+    MessagingTemplate:
+      name: Templates message
+      edit: Modifier
+      new: Nouveau template
+      list: Liste des templates
+      field:
+        id: id
+        name: Nom
+        template: Contenu
+      action:
+        choose_template: Choisir un template de réponse
+        close: Fermer
+    SavHistory:
+      name: Historique SAV
+      list: Liste des historiques SAV
+      field:
+        id: Id
+        sav: SAV
+        history_date: Date
+        event: Événement
+        user_name: Opérateur
+        comment: Commentaire
+        status_setting: État
+        sav_production: Id Production

@@ -1,0 +1,247 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/follow-my-sav.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="sub-header">
+        <div class="overlay">
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-7">
+                <div>
+                    <h3>{{ 'app.entity.Sav.form.sav_number'|trans }} : {{ sav.id }}</h3>
+                    <a data-toggle="collapse" href="#collapseInfos" role="button">
+                        <h2 class="bg-title">{{ 'app.entity.Sav.form.info'|trans() }} <span><i
+                                        class="fa fa-chevron-up"></i></span></h2>
+                    </a>
+                    <div class="row collapse collapse-icon" id="collapseInfos">
+                        <div class="col-sm-4" style="border-right: solid;">
+                            <h3 class="bg-title">{{ 'app.entity.Sav.follow_my_sav.infos_sav'|trans() }}</h3>
+                            <p>{{ 'app.entity.Sav.follow_my_sav.ref'|trans() }}{{ sav.id }}</p>
+                            {% if sav.dealerReference is not null %}
+                                <p>{{ 'app.entity.Sav.follow_my_sav.reference_dealer'|trans() }}{{ sav.dealerReference }}</p>
+                            {% endif %}
+                            <p>{{ 'app.entity.Sav.follow_my_sav.created_at'|trans() }}{{ sav.createdAt|date('d/m/Y') }}</p>
+                            <p>{{ 'app.entity.Sav.follow_my_sav.status_setting'|trans() }}{{ sav.statusSetting }}</p>
+                            {# {% if null != sav.user %} #}
+                            {# <p>{{ 'app.entity.Sav.follow_my_sav.user_name'|trans() }}{{ sav.user.firstName }} {{ sav.user.lastName }}</p> #}
+                            {# {% endif %} #}
+                            {% if sav.dealer is not null %}
+                                <p>{{ 'app.entity.Sav.follow_my_sav.dealer_name'|trans() }}{{ sav.dealer.name }}</p>
+                            {% endif %}
+                            {% if sav.store is not null %}
+                                <p>{{ 'app.entity.Sav.follow_my_sav.store'|trans() }}{{ sav.store }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="col-sm-5">
+                            <h3 class="bg-title">{{ 'app.entity.Sav.follow_my_sav.infos_customer'|trans() }}</h3>
+                            {% if sav.customer is not null %}
+                                {% if sav.customer.name is not null %}
+                                    <p>{{ 'app.entity.Sav.follow_my_sav.customer.name'|trans() }}{{ sav.customer.name }}</p>
+                                {% endif %}
+                                {% if sav.customer.email is not null %}
+                                    <p>{{ 'app.entity.Sav.follow_my_sav.customer.email'|trans() }}{{ sav.customer.email }}</p>
+                                {% endif %}
+                                {% if sav.customer.phoneNumber is not null %}
+                                    <p>{{ 'app.entity.Sav.follow_my_sav.customer.phone_number'|trans() }}{{ sav.customer.phoneNumber }}</p>
+                                {% endif %}
+                                <div>
+                                    <h3 class="bg-title">{{ 'app.entity.Sav.follow_my_sav.delivery_address'|trans() }}</h3>
+                                    <p>
+                                        {{ sav.customer.name }}<br>
+                                        {% if sav.customer.address is not null %}{{ sav.customer.address }} {% if sav.customer.additionalAddress is not null %} {{ sav.customer.additionalAddress }}{% endif %}
+                                            <br>{% endif %}
+                                        {% if sav.customer.postalCode is not null %}{{ sav.customer.postalCode }}{% if sav.customer.city is not null %} {{ sav.customer.city }}{% endif %}
+                                            <br>{% endif %}
+                                        {% if sav.customer.country is not null %}{{ sav.customer.country|country }}{% endif %}
+                                    </p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <a data-toggle="collapse" href="#collapseInfoSav" role="button">
+                        <h2 class="bg-title">{{ 'app.entity.Sav.follow_my_sav.details_sav'|trans() }} <span><i
+                                        class="fa fa-chevron-up"></i></span></h2>
+                    </a>
+                    <div class="row collapse collapse-icon" id="collapseInfoSav">
+                        <div class="col-sm-12">
+                            {{ 'app.entity.Sav.follow_my_sav.infos_article'|trans() }}
+                            <ul>
+                                {% for article in sav.savArticles %}
+                                    {% if null != article.article %}
+                                        <li>{{ article.article }}
+                                            <ul>{% for nature in article.natureSettings %}
+                                                    <li>{{ nature }}</li>{% endfor %}</ul>
+                                        </li>
+                                    {% else %}
+                                        <li>{{ article.unknownArticle }}
+                                            <ul>
+                                                {% for nature in article.natureSettings %}
+                                                    <li>{{ nature }}</li>
+                                                {% endfor %}
+                                                <li>
+                                                    <strong>{{ 'app.entity.SavArticle.form.fileUnknown'|trans }}</strong>
+                                                    <a href="{{ asset(vich_uploader_asset(article.fileUnknown, 'file')) }}"
+                                                       target="_blank">{{ article.fileUnknown.name }}</a></li>
+                                            </ul>
+                                        </li>
+                                    {% endif %}
+                                    <li>{{ 'app.entity.Sav.form.dysfonctionning_proof'|trans }}</li>
+                                    <div class="row">
+                                        {% if savArticleFileInfos[article.id] is defined %}
+                                            {% for file in savArticleFileInfos[article.id] %}
+                                                <div class="col-sm-1 text-center">
+                                                    <i class="{{ file.fileIcon }}"></i>
+                                                </div>
+                                                <div class="col-sm-11">
+                                                    <p class="font-weight-bold p-file">
+                                                        <a href="{{ asset(vich_uploader_asset(file.file, 'file')) }}"
+                                                           target="_blank">{{ file.file.name }}</a>
+                                                    </p>
+                                                    <p class="font-italic p-file" style="font-size: small">
+                                                        {{ file.file.createdAt|date('d/m/Y H:i') }}
+                                                    </p>
+                                                    <p class="font-italic" style="font-size: small">
+                                                        {{ 'app.entity.Sav.follow_my_sav.send_by'|trans() }}{{ file.sender|trans() }}
+                                                    </p>
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </div>
+                                    <li>{{ 'app.entity.Sav.field.article_serial_number'|trans }}
+                                        : {{ article.serialNumber }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-5">
+                <div>
+                    <h3>{{ 'app.entity.Sav.form.sav_status'|trans }} : {{ sav.statusSetting|trans }}</h3>
+                    <a data-toggle="collapse" href="#collapseFile" role="button">
+                        <h2 class="bg-title">{{ 'app.entity.Sav.form.file'|trans() }} <span><i
+                                        class="fa fa-chevron-up"></i></span></h2>
+                    </a>
+                    <div class="row collapse collapse-icon" id="collapseFile">
+                        {% for file in fileInfos %}
+                            <div class="col-sm-1 text-center">
+                                <i class="{{ file.fileIcon }}"></i>
+                            </div>
+                            <div class="col-sm-11">
+                                <p class="font-weight-bold p-file">
+                                    <a href="{{ asset(vich_uploader_asset(file.file, 'file')) }}"
+                                       target="_blank">{{ file.file.name }}</a>
+                                </p>
+                                <p class="font-italic p-file" style="font-size: small">
+                                    {{ file.file.createdAt|date('d/m/Y H:i') }}
+                                </p>
+                                <p class="font-italic" style="font-size: small">
+                                    {{ 'app.entity.Sav.follow_my_sav.send_by'|trans() }}{{ file.sender|trans() }}
+                                </p>
+                            </div>
+                        {% endfor %}
+                        <div class="col-sm-12">
+                            {{ form_start(formFile) }}
+                            <label>{{ 'app.entity.Sav.form.file'|trans }}</label>
+                            {{ form_row(formFile.file) }}
+                            <div class="col-sm-12 text-right">
+                                <button type="submit"
+                                        class="btn submit-button btn">{{ 'app.entity.Sav.follow_my_sav.upload'|trans() }}</button>
+                            </div>
+                            {{ form_end(formFile) }}
+                        </div>
+                    </div>
+                </div>
+                {# <div> #}
+                {# <a data-toggle="collapse" href="#collapseHistory" role="button"> #}
+                {# <h2 class="bg-title">{{ 'app.entity.Sav.form.history_sav'|trans() }} <span><i #}
+                {# class="fa fa-chevron-up"></i></span></h2> #}
+                {# </a> #}
+                {# <div class="row collapse collapse-icon" id="collapseHistory"> #}
+                {# <div class="col-sm-12"> #}
+                {# <table class="table text-center"> #}
+                {# <thead> #}
+                {# <tr> #}
+                {# <th scope="col" #}
+                {# style="border-right: solid;">{{ 'app.entity.Sav.follow_my_sav.history_sav.date'|trans() }}</th> #}
+                {# <th scope="col" #}
+                {# style="border-right: solid;">{{ 'app.entity.Sav.follow_my_sav.history_sav.event'|trans() }}</th> #}
+                {# <th scope="col" #}
+                {# style="border-right: solid;">{{ 'app.entity.Sav.follow_my_sav.history_sav.status'|trans() }}</th> #}
+                {# <th scope="col">{{ 'app.entity.Sav.follow_my_sav.history_sav.serial_number'|trans() }}</th> #}
+                {# </tr> #}
+                {# </thead> #}
+                {# <tbody> #}
+                {# {% for history in sav.savHistories|reverse(true) %} #}
+                {# {% if history.event != 'Modification' %} #}
+                {# <tr style="border-top: solid;"> #}
+                {# <td style="border-right: solid;">{{ history.historyDate|date('d/m/Y') }}</td> #}
+                {# <td style="border-right: solid;">{{ history.event }}</td> #}
+                {# <td style="border-right: solid;">{{ history.statusSetting }}</td> #}
+                {# <td>{{ history.savProduction }}</td> #}
+                {# </tr> #}
+                {# {% endif %} #}
+                {# {% endfor %} #}
+                {# </tbody> #}
+                {# </table> #}
+                {# </div> #}
+                {# </div> #}
+                {# </div> #}
+            </div>
+            <div class="col-sm-12">
+                <div>
+                    <a data-toggle="collapse" href="#collapseMessage" role="button">
+                        <h2 class="bg-title">{{ 'app.entity.Sav.form.message'|trans() }} <span><i
+                                        class="fa fa-chevron-up"></i></span></h2>
+                    </a>
+                    <div class="row collapse collapse-icon" id="collapseMessage">
+                        <div class="col-sm-12">
+                            {% for message in messageInfos %}
+                                <div class="text-justify messaging">
+                                    <div class="message {% if message.sender != 'lama' %}text-right{% else %}text-left{% endif %}">
+                                        {% if message.sender != 'lama' %}
+                                            <span class="message-title-right text-right">{{ message.message.createdAt|date('d/m/Y H:i') }} - {{ 'app.entity.Sav.follow_my_sav.send_by'|trans() }}{{ message.senderTranslate|trans() }}</span>
+                                        {% else %}
+                                            <span class="message-title-left text-left">{{ message.message.createdAt|date('d/m/Y H:i') }} - {{ 'app.entity.Sav.follow_my_sav.send_by'|trans() }}{{ message.senderTranslate|trans() }}</span>
+                                        {% endif %}
+                                        {{ message.message.message|raw }}
+                                    </div>
+                                    <ul>
+                                        {% for file in message.files %}
+                                            <li>
+                                                <a target="_blank" href="{{ vich_uploader_asset(file, 'file') }}">
+                                                    <i class="far fa-file"></i> {{ file.name }}
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endfor %}
+                            <div>
+                                {{ form_start(form) }}
+                                <div>{{ form_widget(form.message, {'attr': {'style': 'width: 100%'}}) }}</div>
+                                <div class="row">
+                                    <div class="col-sm-12 text-right">{{ form_row(form.submit) }}</div>
+                                </div>
+                                {{ form_end(form) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        {% include 'follow-my-sav.js.twig' %}
+    </script>
+{% endblock %}

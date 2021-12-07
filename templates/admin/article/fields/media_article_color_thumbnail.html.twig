@@ -1,0 +1,15 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    <div>
+        {% if instanceOf(object, 'App\\Entity\\Color') %}
+            {% if object.color is not null %}
+                <img class="img-responsive" src="{{ asset('images/colors/' ~ object.idLama ~ '.ico') }}" alt="{{ object.color }}" style="min-height: 50px; max-height: 50px;"/>
+            {% endif %}
+        {% else %}
+            {% if object.color is not null and object.color.idLama is not null %}
+                <img class="img-responsive" src="{{ asset('images/colors/' ~ object.color.idLama ~ '.ico') }}" alt="{{ object.color.color }}" style="min-height: 50px; max-height: 50px;"/>
+            {% endif %}
+        {% endif %}
+    </div>
+{% endblock %}

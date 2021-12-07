@@ -1,0 +1,26 @@
+$(document).ready(function () {
+    let savId = $('.sav-edit').data('sav-id');
+
+    $(document).on('click', '.sav-edit-messagings', function () {
+        $.ajax({
+            url: '{{ admin.generateUrl('new_message') }}',
+            type: 'POST',
+            data: {
+                savId: savId
+            }
+        })
+    });
+
+    $(document).on('click', '#sendToDivalto', function () {
+        $(this).addClass('isDisabled');
+        $('#loader').removeClass('hide');
+    });
+
+    $.ajax({
+        url: '{{ admin.generateUrl('new_sav') }}',
+        type: 'POST',
+        data: {
+            savId: savId
+        }
+    });
+});

@@ -1,0 +1,53 @@
+index:
+    path: /
+    controller: App\Controller\Web\DefaultController::index
+
+sonata_translation:
+  resource: '@SonataTranslationBundle/Resources/config/routes.yaml'
+
+sonata_user_admin_security:
+  resource: '@SonataUserBundle/Resources/config/routing/admin_security.xml'
+  prefix: /admin
+
+sonata_user_admin_resetting:
+  resource: '@SonataUserBundle/Resources/config/routing/admin_resetting.xml'
+  prefix: /admin/resetting
+
+elfinder:
+   resource: "@FMElfinderBundle/Resources/config/routing.yaml"
+########### ROUTING ##########
+xrequest_for_sav:
+  path: /request-for-sav/{source}
+  controller: App\Controller\Web\RequestForSavController:newRequestForSav
+
+follow-my-sav:
+  path: /follow-my-sav/{codeSav}
+  controller: App\Controller\Web\RequestForSavController:followMySav
+
+charts:
+  path: /admin/charts/show
+  controller: App\Controller\Admin\ChartController:pieShowAction
+
+sav_contact:
+  path: /sav/contact
+  controller: App\Controller\Web\SavController:form
+
+sav_success:
+  path: /sav/success/{code}
+  controller: App\Controller\Web\SavController:success
+
+sav_email_sent:
+  path: /sav/email-sent
+  controller: App\Controller\Web\SavController:emailSent
+########### END ROUTING ##########
+
+########### AJAX ##########
+get_serial_number:
+  path: /request-for-sav/{source}/get-serial-number
+  controller: App\Controller\RequestForSavController:getSerialNumber
+
+find_city:
+  path: /find-city
+  controller: App\Controller\Web\SavController::findCity
+  utf8: true
+########### END AJAX ##########

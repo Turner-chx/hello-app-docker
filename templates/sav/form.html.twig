@@ -1,0 +1,151 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'app.form.title.meta_title'|trans }}{% endblock %}
+
+{% trans_default_domain 'messages' %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/iframe.css') }}">
+{% endblock %}
+
+{% block body %}
+    {% import _self as macro %}
+    {% macro renderProduct(field) %}
+        <div class="row">
+            <div class="col-md-4 col-md-4 col-xs-12 unknown-to-hide">
+                {{ form_label(field.article) }} <i class="far fa-question-circle help-button" data-toggle="modal" data-target="#help_article" style="cursor: pointer;"></i>
+                {{ form_widget(field.article) }}
+            </div>
+            <div class="col-md-4 col-md-4 col-xs-12 d-none unknown">
+                {{ form_row(field.unknownArticle) }}
+            </div>
+            <div class="col-md-4 col-md-4 col-xs-12">
+                {{ form_row(field.natureSettings) }}
+            </div>
+            <div class="col-md-4 col-md-4 col-xs-12">
+                {{ form_row(field.filesProof) }}
+            </div>
+            <div class="col-4 col-md-4 col-xs-12 align-self-start">
+                {{ form_label(field.serialNumber) }} <i class="far fa-question-circle help-button" data-toggle="modal" data-target="#help_serialNumber" style="cursor: pointer;"></i>
+                {{ form_widget(field.serialNumber) }}
+            </div>
+            <div class="col-4 col-md-4 col-xs-12 align-self-start">
+                {{ form_label(field.serialNumber2) }} <i class="far fa-question-circle help-button" data-toggle="modal" data-target="#help_serialNumber2" style="cursor: pointer;"></i>
+                {{ form_widget(field.serialNumber2) }}
+            </div>
+        </div>
+        <div class="row d-none unknown">
+            <div class="col-12">
+                {{ form_row(field.fileUnknown) }}
+            </div>
+        </div>
+        <a href="#" class="float-right btn-danger delete-icon remove-tag"><i class="far fa-trash-alt"></i></a>
+    {% endmacro %}
+
+    <div class="modal fade" id="help_article" tabindex="-1" role="dialog" aria-labelledby="help_article_label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <img class="sav-help" src="{{ asset('images/help/help_article.jpeg') }}" alt="logo_recup">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">x {{ 'app.entity.SavArticle.form.close'|trans }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="help_serialNumber" tabindex="-1" role="dialog" aria-labelledby="help_serialNumber_label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <img class="sav-help" src="{{ asset('images/help/help_serialNumber.jpeg') }}" alt="logo_recup">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">x {{ 'app.entity.SavArticle.form.close'|trans }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="help_serialNumber2" tabindex="-1" role="dialog" aria-labelledby="help_serialNumber2_label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <img class="sav-help" src="{{ asset('images/help/help_serialNumber2.jpeg') }}" alt="logo_recup">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">x {{ 'app.entity.SavArticle.form.close'|trans }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="container" class="container">
+        {{ form_start(form) }}
+        <h3 class="title">{{ 'app.form.title.product'|trans }}</h3>
+        <div class="savArticle"
+             data-prototype="{{ macro.renderProduct(form.savArticles.vars.prototype)|e('html_attr') }}">
+            {% for fields in form.savArticles %}
+                {{ macro.renderProduct(fields) }}
+            {% endfor %}
+        </div>
+        <br>
+        <br>
+        <div class="row">
+            <div class="col-6">
+                <h3>{{ 'app.form.title.contact'|trans }}</h3>
+                {{ form_row(form.customer) }}
+            </div>
+            <div class="col-6">
+                <h3>{{ 'app.form.title.additional_information'|trans }}</h3>
+                {{ form_row(form.store) }}
+                {{ form_row(form.customerPrinter) }}
+                {{ form_row(form.savFilesProof) }}
+            </div>
+            <div class="col-12">
+                <h3>{{ 'app.form.title.description'|trans }}</h3>
+                {{ form_row(form.description) }}
+            </div>
+            {{ form_row(form.submit) }}
+            <img id="loader" class="d-none" src="{{ asset('images/frontend/loader.gif') }}" alt="Chargement...">
+        </div>
+        {{ form_end(form) }}
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/iframe.js') }}"></script>
+    <script type="text/javascript">
+        $(document).on('change', '#sav_customer_postalCode', function () {
+            let postCode = checkPostCodeNumber();
+
+            addCities(postCode);
+        });
+
+        function checkPostCodeNumber()
+        {
+            let postCode = $('#sav_customer_postalCode').val();
+            let reg = /[^0-9.]/g;
+            let newPostCode = postCode.replace(reg, '');
+            $('#sav_customer_postalCode').val(newPostCode);
+
+            return newPostCode
+        }
+
+        function addCities(postCode) {
+            $.ajax({
+                url: '{{ path('find_city') }}',
+                type: 'POST',
+                data: {
+                    postCode: postCode
+                },
+                success: function (data) {
+                    if (data.success) {
+                        $('#sav_customer_city').val(data.cityName);
+                    }
+                }
+            })
+        }
+    </script>
+{% endblock %}

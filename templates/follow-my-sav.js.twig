@@ -1,0 +1,11 @@
+$(document).ready(function () {
+    $('.collapse-icon').collapse('show');
+
+    $('.collapse-icon').on('show.bs.collapse', function () {
+        $(this).parent('div').find('a').find('h2').find('span').html('<i class="fa fa-chevron-up"></i>');
+    })
+
+    $('.collapse-icon').on('hide.bs.collapse', function () {
+        $(this).parent('div').find('a').find('h2').find('span').html('<i class="fa fa-chevron-down"></i>');
+    })
+})

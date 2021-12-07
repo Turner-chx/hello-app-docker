@@ -1,0 +1,46 @@
+{% extends 'mail/sav_base.html.twig' %}
+
+{% block overlay %}
+    <div class="sub-header">
+        <div class="overlay">
+            <h1>{{ 'app.mail.sav_message.name'|trans({'%savId%': sav.id}) }}</h1>
+        </div>
+    </div>
+{% endblock overlay %}
+
+{% block container %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <p class="text-center">
+                    <strong>
+                        <span style="font-size: 18px;">{{ 'app.mail.sav_message.message_intro'|trans({'%sender%': sender, '%date%': message.createdAt|date('d/m/Y H:i')}) }}</span>
+                    </strong>
+                </p>
+                <p class="text-justify">
+                    {{ message.message|raw }}
+                </p>
+
+                {% if always %}
+                    <p class="text-center" style="padding-top: 15px">
+                        <strong>
+                            <span style="font-size: 18px;">{{ 'app.entity.Sav.url_my_sav.always_url'|trans() }}</span>
+                        </strong>
+                    </p>
+                    <p class="text-center">
+                        <a href="{{ absolute_url(path('follow-my-sav', {'codeSav': code})) }}" target="_blank">{{ absolute_url(path('follow-my-sav', {'codeSav': code})) }}</a>
+                    </p>
+                {% else %}
+                    <p class="text-center">
+                        <strong>
+                            <span style="font-size: 18px;">{{ 'app.mail.sav_message.sav_message_link'|trans() }}</span>
+                        </strong>
+                    </p>
+                    <p class="text-center">
+                        <a href="http://intranet-qualite-web.local/admin/app/sav/{{ sav.id }}/edit?_tab=tab_s5fcf76a6c453e_1475590538_2_messagings" target="_blank">http://intranet-qualite-web.local/admin/app/sav/{{ sav.id }}/edit?_tab=tab_s5fcf76a6c453e_1475590538_2_messagings</a>
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock container %}

@@ -1,0 +1,11 @@
+sonata_translation:
+  locale_switcher: true
+  locales: [en, fr]
+  default_locale: "%locale%"
+  # change default behavior for translated field filtering.
+  default_filter_mode: knplabs # must be either 'gedmo' or 'knplabs', default: gedmo
+  # here enable the types you need
+  gedmo:
+    enabled: true
+  knplabs:
+    enabled: true

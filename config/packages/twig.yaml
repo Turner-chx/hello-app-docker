@@ -1,0 +1,13 @@
+twig:
+  default_path: '%kernel.project_dir%/templates'
+  debug: '%kernel.debug%'
+  strict_variables: '%kernel.debug%'
+  form_themes:
+#    - '@EasyAdmin/form/bootstrap_4.html.twig'
+    - '@TetranzSelect2Entity/Form/fields.html.twig'
+    - '@FOSCKEditor/Form/ckeditor_widget.html.twig'
+    - '@SonataForm/Form/datepicker.html.twig'
+    - '@VichUploader/Form/fields.html.twig'
+  globals:
+    authentication_utils: '@security.authentication_utils'
+    sav_handler: '@App\Handler\SavHandler'

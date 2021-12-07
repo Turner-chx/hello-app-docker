@@ -1,0 +1,145 @@
+{% form_theme form with easyadmin_config('design.form_theme') %}
+
+{% set _entity_config = easyadmin_entity(app.request.query.get('entity')) %}
+{% trans_default_domain _entity_config.translation_domain %}
+{% set _trans_parameters = { '%entity_name%': _entity_config.name|trans, '%entity_label%': _entity_config.label|trans } %}
+
+{% extends _entity_config.templates.layout %}
+
+{% block body_id 'easyadmin-new-' ~ _entity_config.name %}
+{% block body_class 'new new-' ~ _entity_config.name|lower %}
+
+{% block content_title %}
+    {% apply spaceless %}
+        {% set _default_title = 'new.page_title'|trans(_trans_parameters, 'EasyAdminBundle') %}
+        {{ _entity_config.new.title is defined ? _entity_config.new.title|trans(_trans_parameters) : _default_title }}
+    {% endapply %}
+{% endblock %}
+
+{% block content_footer_wrapper '' %}
+
+{% block main %}
+    {% block entity_form %}
+        {{ form_start(form) }}
+        <div class="d-none">
+            {{ form_row(form.rmaCode) }}
+        </div>
+        <div class="row" xmlns="http://www.w3.org/1999/html">
+            <div class="field-group col-7">
+                <fieldset>
+                    <legend class="with-icon"><i class="fa fa-info"></i> {{ 'app.entity.Sav.form.info'|trans() }}</legend>
+                    <p class="text-muted">{{ 'app.entity.Sav.form.customer_not_seeing'|trans({}, 'messages') }}</p>
+                    <div class="row">
+                        <div class="col-6">
+                            {{ form_row(form.createdAt) }}
+                            {{ form_row(form.source, {'label_attr': {'class': 'text-success'}}) }}
+                            {{ form_row(form.production, { 'attr': {'class': 'production-class', 'data-action': path('getArticleInformation')}} ) }}
+                            {{ form_row(form.article) }}
+                            <div class="form-group">
+                                <label class="form-control-label" for="article-infos">{{ 'app.entity.Sav.field.article_reference.name'|trans() }}</label>
+                                <div class="form-widget">
+                                    <span id="article-infos">
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-control-label" for="guarantee-infos">{{ 'app.entity.Sav.field.guarantee.name'|trans() }}</label>
+                                <div class="form-widget">
+                                    <span id="guarantee-infos"></span>
+                                </div>
+                                <div class="form-widget with-icon">
+                                    <i id="guarantee-icon"></i>
+                                    <span id="is-guarantee"></span>
+                                </div>
+                            </div>
+                            {{ form_row(form.subProductType) }}
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="article-infos">{{ 'app.entity.Sav.field.rma_code.name'|trans() }} <i type="button" class="fas fa-plus button-icon new-rma-code" data-action="{{ path('generateRma') }}"></i></label>
+                                <div class="form-widget">
+                                    <span id="rma_code">
+                                    </span>
+                                </div>
+                            </div>
+                            {{ form_row(form.purchaseDate) }}
+                            {{ form_row(form.statusSetting) }}
+                            {{ form_row(form.repairDate) }}
+{#                            {{ form_row(form.clientType, {'id': 'client-type'}) }}#}
+                            {{ form_row(form.dealerReference) }}
+                            {{ form_row(form.imeiNumber) }}
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="field-group col-5">
+                <fieldset>
+                    <legend class="with-icon"><i class="fa fa-file"></i> {{ 'app.entity.Sav.form.file'|trans() }}</legend>
+                    {{ form_row(form.files) }}
+                </fieldset>
+                <fieldset>
+                    <legend class="with-icon"><i class="fa fa-info"></i> {{ 'app.entity.Sav.form.additional_info'|trans() }}</legend>
+                    {{ form_row(form.serialNumberCustomer) }}
+                    {{ form_row(form.store) }}
+                    {{ form_row(form.availability) }}
+                    {{ form_row(form.comment, {'label_attr': {'class': 'text-success'}}) }}
+                </fieldset>
+            </div>
+            <div class="field-group col-12">
+                <fieldset>
+                    <legend class="with-icon"><i class="fa fa-files-o"></i> {{ 'app.entity.Sav.form.sav'|trans() }}</legend>
+                    <div class="row">
+                        <div class="col-6">
+                            {{ form_row(form.dealer, { 'attr': {'class': 'dealer-class', 'data-action': path('getDealerInformation')}} ) }}
+                        </div>
+                        <div class="col-6">
+                            {{ form_row(form.user, { 'attr': {'class': 'user-class', 'data-action': path('getConnectedUser')}}) }}
+                        </div>
+                    </div>
+                    {{ form_row(form.natureSetting) }}
+                    {{ form_row(form.description) }}
+                </fieldset>
+                <fieldset>
+                    <legend class="with-icon"><i class="fa fa-address-card"></i> {{ 'app.entity.Sav.form.customer_info'|trans() }}</legend>
+                    <div class="row">
+                        <div class="col-6">
+                            {{ form_row(form.customer.name) }}
+                            {{ form_row(form.customer.address) }}
+                            {{ form_row(form.customer.postalCode) }}
+                            {{ form_row(form.customer.country) }}
+                            {{ form_row(form.customer.phoneNumber) }}
+                        </div>
+                        <div class="col-6">
+                            {{ form_row(form.customer.email) }}
+                            {{ form_row(form.customer.additionalAddress) }}
+                            {{ form_row(form.customer.city) }}
+                            {{ form_row(form.customer.customerContact) }}
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <section class="content-footer">
+            <div class="form-actions">
+                {{- block('item_actions') -}}
+            </div>
+            </section>
+        {{ form_widget(form._token) }}
+        {{ form_end(form, {'render_rest': false}) }}
+
+    {% endblock entity_form %}
+{% endblock %}
+
+{% block item_actions %}
+    {# the 'save' action is hardcoded for the 'edit' and 'new' views #}
+    <button type="submit" class="btn btn-primary action-save">
+        <span class="btn-label">{{ 'app.entity.Sav.new'|trans }}</span>
+    </button>
+{% endblock item_actions %}
+
+{% block body_javascript %}
+    {{ parent() }}
+    <script type="text/javascript">
+        {% include 'ajax.js.twig' %}
+    </script>
+{% endblock %}

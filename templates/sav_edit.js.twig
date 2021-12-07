@@ -1,0 +1,51 @@
+$(document).ready(function () {
+    let savId = $('#edit-sav-form').data('entityId');
+
+    $.ajax({
+        url: '{{ path('is_new') }}',
+        type: 'POST',
+        data: {
+            savId: savId
+        }
+    })
+
+    $(document).on('click', '.tab-sav-message', function () {
+        $('#sav_newMessage').prop('checked', false);
+        $.ajax({
+            url: '{{ path('new_message') }}',
+            type: 'POST',
+            data: {
+                savId: savId
+            }
+        })
+    });
+
+    changeCustomerNameLabel();
+    $(document).on('change', '#client-type', function () {
+        changeCustomerNameLabel();
+    });
+
+    $('.collapse-icon').collapse('hide');
+
+    $('.collapse-icon').on('show.bs.collapse', function () {
+        $(this).parent('div').find('a').find('h6').find('span').html('<i class="fa fa-chevron-up"></i>');
+    })
+
+    $('.collapse-icon').on('hide.bs.collapse', function () {
+        $(this).parent('div').find('a').find('h6').find('span').html('<i class="fa fa-chevron-down"></i>');
+    })
+
+    $(document).on('click', '.choose_messaging_template', function () {
+        $('#message_form_message').val($(this).data('value'));
+        $('#close_messaging_templates_modal').click();
+    });
+})
+
+function changeCustomerNameLabel() {
+    var label = $('label[for="'+ $('#sav_customer_name').attr('id') +'"]');
+    if ($('#client-type').val() == 'dealer') {
+        label.text('Raison Sociale');
+    } else {
+        label.text('Nom');
+    }
+}

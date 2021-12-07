@@ -1,0 +1,93 @@
+* {
+    font-size: 14px;
+    font-family: sans-serif;
+}
+
+html,
+body {
+    margin: 0;
+    overflow: hidden;
+    background-color: white;
+}
+
+.custom-file-input ~ .custom-file-label::after {
+    content: "Choisir un fichier";
+}
+
+#container {
+    border-radius: 5px;
+    padding: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.btn-green {
+    background-color: #77cc00;
+    border-color: #77cc00;
+}
+
+.delete-icon {
+    padding: 7px;
+    font-size: 18px;
+    border-radius: 5px;
+    margin-right: -50px;
+    margin-top: -142px;
+}
+
+.savArticle {
+    margin-top: 20px;
+}
+
+.title {
+    margin-top: 50px;
+}
+
+.sav-help {
+    width: 65%;
+}
+
+.modal-footer {
+    border-top: none;
+}
+
+.help-button {
+    color: #77cc00;
+}
+
+#loader {
+    margin-left: 15px;
+    margin-top: -5px;
+    height: 45px;
+}
+
+.btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show > .btn-primary.dropdown-toggle, .btn-primary:hover {
+    background-color: #77cc00;
+    border-color: #77cc00;
+}
+
+
+@media all and (max-width: 900px) {
+    h3 {
+        font-size: 12px;
+    }
+
+    label {
+        font-size: 11px;
+    }
+
+    .remove-tag {
+        margin-right: 0;
+    }
+
+    button[type="submit"] {
+        margin-left: 15px;
+    }
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    select,
+    textarea,
+    input {
+        font-size: 16px !important;
+    }
+}

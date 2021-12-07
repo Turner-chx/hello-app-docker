@@ -1,0 +1,196 @@
+{% block sonata_pre_fieldsets %}
+<div class="row">
+    {% endblock %}
+
+    {% block sonata_tab_content %}
+        <div class="col-md-12">
+            {% set tab_prefix = 'tab_' ~ admin.uniqid ~ '_' ~ random() %}
+            {% set tab_query_index = app.request.query.get('_tab', 0)|split("_")|last %}
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs" role="tablist">
+                    {% set _tab_name_sav = tab_prefix ~ '_0' %}
+                    {% set _tab_name_messagings = tab_prefix ~ '_1' %}
+                    {% set _tab_name_history = tab_prefix ~ '_2' %}
+                    <li{% if null == app.request.query.get('_tab') or (app.request.query.has('_tab') and app.request.query.get('_tab') == _tab_name_sav) or tab_query_index == '0' %} class="active"{% endif %}>
+                        <a href="#{{ _tab_name_sav }}" class="changer-tab"
+                           aria-controls="{{ _tab_name_sav }}" data-toggle="tab">
+                            <i class="fa fa-exclamation-circle has-errors hide"
+                               aria-hidden="true"></i><i
+                                    class="fa fa-files-o"></i> {{ 'app.entity.Sav.form.sav'|trans }}
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content sav-edit" data-sav-id="{{ objectId }}">
+                    <div class="tab-pane fade {% if null == app.request.query.get('_tab') or (app.request.query.has('_tab') and app.request.query.get('_tab') == _tab_name_sav) or tab_query_index == '0' %}in active{% endif %}"
+                         id="{{ _tab_name_sav }}">
+                        <div class="box-body container-fluid">
+                            <div class="sonata-ba-collapsed-fields">
+                                <div class="col-md-6">
+                                    <div class="box box-primary">
+                                        <div class="box-header">
+                                            <h4 class="box-title">
+                                                {{ 'app.entity.Sav.form.customer_info'|trans }}
+                                            </h4>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="sonata-ba-collapsed-fields">
+                                                {{ form_row(form.customer) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="box box-primary">
+                                        <div class="box-header">
+                                            <h4 class="box-title">
+                                                {{ 'app.entity.Sav.form.purchase_proof'|trans }}
+                                            </h4>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="sonata-ba-collapsed-fields">
+                                                {{ form_row(form.store) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="box box-primary">
+                                        <div class="box-header">
+                                            <h4 class="box-title">
+                                                {{ 'app.entity.Sav.form.proof'|trans }}
+                                            </h4>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="sonata-ba-collapsed-fields">
+                                                {{ form_row(form.customerPrinter) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="box box-primary">
+                                        <div class="box-header">
+                                            <h4 class="box-title">
+                                                {{ 'app.entity.Sav.form.products'|trans }}
+                                            </h4>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="sonata-ba-collapsed-fields">
+                                                <div class="col-md-7">
+                                                    {{ form_row(form.savArticles) }}
+                                                </div>
+                                                <div class="col-md-5">
+                                                    {{ form_row(form.replacementArticles) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="box box-primary">
+                                        <div class="box-header">
+                                            <h4 class="box-title">
+                                                {{ 'app.entity.Sav.form.description'|trans }}
+                                            </h4>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="sonata-ba-collapsed-fields">
+                                                <div class="col-md-12">
+                                                    {{ form_row(form.description) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="box box-primary">
+                                        <div class="box-header">
+                                            <h4 class="box-title">
+                                                {{ 'app.entity.Sav.form.other'|trans }}
+                                            </h4>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="sonata-ba-collapsed-fields">
+                                                <div class="col-md-6">
+                                                    {{ form_row(form.createdAt) }}
+                                                    {{ form_row(form.source) }}
+                                                    {{ form_row(form.statusSetting) }}
+                                                </div>
+                                                <div class="col-md-6">
+                                                    {{ form_row(form.user) }}
+                                                    {{ form_row(form.carrierCode) }}
+                                                    {# {{ form_row(form.clientType) }} #}
+                                                    {{ form_row(form.dealer) }}
+                                                </div>
+                                                <div class="col-md-12">
+                                                    {{ form_row(form.comment) }}
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="box box-primary">
+                                        <div class="box-header">
+                                            <h4 class="box-title">
+                                                {{ 'app.entity.Sav.form.link'|trans }}
+                                            </h4>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="sonata-ba-collapsed-fields">
+                                                {{ form_row(form.jiraLink) }}
+                                            </div>
+                                            {% if null != sav.jiraLink %}
+                                                <a href="{{ sav.jiraLink }}"
+                                                   target="_blank">{{ 'app.entity.Sav.form.go_to_link'|trans }}</a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" name="_tab" value="{{ app.request.query.get('_tab') }}">
+            </div>
+        </div>
+
+    {% endblock %}
+
+    {% block sonata_post_fieldsets %}
+</div>
+{% endblock %}
+
+<script type="text/javascript">
+    $(document).on('change', '.checkPostCode', function () {
+        checkPostCodeNumber();
+    });
+
+    function checkPostCodeNumber() {
+        $('.checkPostCode').each(function () {
+            let postCode = $(this).val();
+            let reg = /[^0-9.]/g;
+            let newPostCode = postCode.replace(reg, '');
+            $(this).val(newPostCode);
+            addCities(newPostCode);
+        });
+    }
+
+    function addCities(postCode) {
+        $.ajax({
+            url: '{{ path('find_city') }}',
+            type: 'POST',
+            data: {
+                postCode: postCode
+            },
+            success: function (data) {
+                if (data.success) {
+                    $('.addCity').each(function () {
+                        $(this).val(data.cityName);
+                    });
+                }
+            }
+        })
+    }
+</script>

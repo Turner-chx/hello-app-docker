@@ -1,0 +1,60 @@
+body, html{
+    background-color:#34515E;
+    font-family: 'Open Sans Condensed', sans-serif;
+    font-size: 18px;
+}
+
+h1 {
+    color: white;
+}
+
+.logo {
+    width: 120px;
+    padding-top: 10px;
+}
+
+.iframe-sav {
+    font-size: 16px;
+    left: 50%;
+    top: 50%;
+    width: 75%;
+    position: absolute;
+    -webkit-transform: translate3d(-50%, -50%, 0);
+    -moz-transform: translate3d(-50%, -50%, 0);
+    transform: translate3d(-50%, -50%, 0);
+}
+
+iframe {
+    border-radius: 25px;
+    width:100%;
+    border:none;
+}
+
+@media all and (max-width: 900px) {
+
+    .iframe-sav {
+        top: 55%;
+    }
+
+    .logo {
+        padding-top: 0;
+    }
+
+    h1 {
+        font-size: 30px;
+        padding-top: 0;
+        margin-left: 15px;
+    }
+
+    .container-logo, .container-title {
+        text-align: center;
+    }
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    select,
+    textarea,
+    input {
+        font-size: 16px !important;
+    }
+}

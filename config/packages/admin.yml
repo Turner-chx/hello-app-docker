@@ -1,0 +1,147 @@
+services:
+  admin.article:
+    class: App\Admin\ArticleAdmin
+    arguments: [ ~, App\Entity\Article, App\Controller\Admin\ArticleAdminController ]
+    tags:
+      - { name: sonata.admin, manager_type: orm, group: admin.menu.article, label: app.admin.menu.article }
+    public: true
+
+  admin.user:
+    class: App\Admin\UserAdmin
+    arguments: [ ~, App\Entity\User, App\Controller\Admin\UserAdminController ]
+    tags:
+      - { name: sonata.admin, manager_type: orm, group: admin.menu.user, label: app.admin.menu.user }
+    public: true
+
+  admin.color:
+    class: App\Admin\ColorAdmin
+    arguments: [ ~, App\Entity\Color, App\Controller\Admin\ColorAdminController ]
+    tags:
+      - { name: sonata.admin, manager_type: orm, group: admin.menu.parameter_article, label: app.admin.menu.color }
+    public: true
+
+  admin.brand:
+    class: App\Admin\BrandAdmin
+    arguments: [ ~, App\Entity\Brand, App\Controller\Admin\BrandAdminController ]
+    tags:
+      - { name: sonata.admin, manager_type: orm, group: admin.menu.parameter_article, label: app.admin.menu.brand }
+    public: true
+
+  admin.product_type:
+    class: App\Admin\ProductTypeAdmin
+    arguments: [ ~, App\Entity\ProductType, App\Controller\Admin\ProductTypeAdminController ]
+    tags:
+      - { name: sonata.admin, manager_type: orm, group: admin.menu.parameter_article, label: app.admin.menu.product_type }
+    public: true
+
+  admin.customer:
+    class: App\Admin\CustomerAdmin
+    arguments: [ ~, App\Entity\Customer, App\Controller\Admin\CustomerAdminController ]
+    tags:
+      - { name: sonata.admin, manager_type: orm, group: admin.menu.user, label: app.admin.menu.customer }
+    public: true
+
+  admin.source:
+    class: App\Admin\SourceAdmin
+    arguments: [ ~, App\Entity\Source, App\Controller\Admin\SourceAdminController ]
+    tags:
+      - { name: sonata.admin, manager_type: orm, group: admin.menu.parameter_sav, label: app.admin.menu.source }
+    public: true
+
+  admin.gamme:
+    class: App\Admin\GammeAdmin
+    arguments: [ ~, App\Entity\Gamme, App\Controller\Admin\GammeAdminController ]
+    tags:
+      - { name: sonata.admin, manager_type: orm, group: admin.menu.parameter_article, label: app.admin.menu.gamme }
+    public: true
+
+  admin.oem:
+    class: App\Admin\OemAdmin
+    arguments: [ ~, App\Entity\Oem, App\Controller\Admin\OemAdminController ]
+    tags:
+      - { name: sonata.admin, manager_type: orm, group: admin.menu.parameter_article, label: app.admin.menu.oem }
+    public: true
+
+  admin.status_setting:
+    class: App\Admin\StatusSettingAdmin
+    arguments: [ ~, App\Entity\StatusSetting, App\Controller\Admin\StatusSettingAdminController ]
+    tags:
+      - { name: sonata.admin, manager_type: orm, group: admin.menu.parameter_sav, label: app.admin.menu.status_setting }
+    public: true
+
+  admin.dealer:
+    class: App\Admin\DealerAdmin
+    arguments: [ ~, App\Entity\Dealer, App\Controller\Admin\DealerAdminController ]
+    tags:
+      - { name: sonata.admin, manager_type: orm, group: admin.menu.user, label: app.admin.menu.dealer }
+    public: true
+
+  admin.sav_history:
+    class: App\Admin\SavHistoryAdmin
+    arguments: [ ~, App\Entity\SavHistory, App\Controller\Admin\SavHistoryAdminController ]
+    tags:
+      - { name: sonata.admin, manager_type: orm, group: admin.menu.parameter_sav, label: app.admin.menu.sav_history }
+    public: true
+
+  admin.nature_setting:
+    class: App\Admin\NatureSettingAdmin
+    arguments: [ ~, App\Entity\NatureSetting, App\Controller\Admin\NatureSettingAdminController ]
+    tags:
+      - { name: sonata.admin, manager_type: orm, group: admin.menu.parameter_sav, label: app.admin.menu.nature_setting }
+    public: true
+
+  admin.sav:
+    class: App\Admin\SavAdmin
+    arguments:
+      - ~
+      - App\Entity\Sav
+      - App\Controller\Admin\SavAdminController
+      - '@App\Handler\RequestForSavHandler'
+      - '@App\Mailer\Mailer'
+    tags:
+      - { name: sonata.admin, manager_type: orm, group: admin.menu.sav, label: app.admin.menu.sav }
+    calls:
+      - [ setTemplate, [ edit, 'admin/sav/edit.html.twig' ] ]
+    public: true
+
+  admin.sav_new:
+    class: App\Admin\SavNewAdmin
+    arguments:
+      - ~
+      - App\Entity\Sav
+      - App\Controller\Admin\SavAdminController
+      - '@App\Handler\RequestForSavHandler'
+      - '@App\Mailer\Mailer'
+    tags:
+      - { name: sonata.admin, manager_type: orm, group: admin.menu.sav, label: app.admin.menu.sav_new }
+    calls:
+      - [ setTemplate, [ edit, 'admin/sav/edit.html.twig' ] ]
+    public: true
+
+  admin.sav_article:
+    class: App\Admin\SavArticleAdmin
+    arguments: [ ~, App\Entity\SavArticle, App\Controller\Admin\SavArticleAdminController ]
+    tags:
+      - { name: sonata.admin, manager_type: orm, group: admin, label: app.admin.menu.sav_article }
+    public: true
+
+  admin.messaging:
+    class: App\Admin\MessagingAdmin
+    arguments: [ ~, App\Entity\Messaging, App\Controller\Admin\MessagingAdminController ]
+    tags:
+      - { name: sonata.admin, manager_type: orm, group: admin, label: app.admin.menu.messaging }
+    public: true
+
+  admin.files:
+    class: App\Admin\FilesAdmin
+    arguments: [ ~, App\Entity\Files, ~ ]
+    tags:
+      - { name: sonata.admin, manager_type: orm, group: admin, label: Files }
+    public: true
+
+  admin.email:
+    class: App\Admin\EmailAdmin
+    arguments: [ ~, App\Entity\Email, ~ ]
+    tags:
+      - { name: sonata.admin, manager_type: orm, group: admin, label: Email }
+    public: true

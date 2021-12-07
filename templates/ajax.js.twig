@@ -1,0 +1,284 @@
+$(document).ready(function () {
+    if ($('.check-natures').length > 0) {
+        displayNatures();
+        displayImei();
+    }
+
+    if ($('#sav_statusSetting').length > 0) {
+        displayRepairDate();
+    }
+
+    $(document).on('change', '#sav_statusSetting', function () {
+        displayRepairDate();
+    });
+
+    $(document).on('change', '#sav_production_autocomplete', function () {
+        displayNatures();
+        displayImei();
+    });
+
+    $(document).on('change', '#sav_source', function () {
+        displayNatures();
+        displayImei();
+    });
+
+    $(document).on('change', '#sav_subProductType', function () {
+        displayNatures();
+        displayImei();
+    });
+
+    function displayNatures() {
+        let production = $('#sav_production_autocomplete').val();
+        let source = $('#sav_source').val();
+        let subProduct = $('#sav_subProductType').val();
+
+        $('input[name="sav[natureSetting][]"]').each(function () {
+            $(this).parent('div').addClass('d-none');
+        });
+
+        $.ajax({
+            url: '{{ path('check_natures') }}',
+            type: 'POST',
+            data: {
+                production: production,
+                source: source,
+                subProduct: subProduct
+            },
+            success: function (data) {
+                if (data.success) {
+                    for (let nature in data.natures) {
+                        $('#sav_natureSetting_' + data.natures[nature]).parent('div').removeClass('d-none');
+                    }
+                }
+            }
+        })
+    }
+
+    function displayImei() {
+        let production = $('#sav_production_autocomplete').val();
+        let source = $('#sav_source').val();
+        let subProduct = $('#sav_subProductType').val();
+
+        $.ajax({
+            url: '{{ path('check_imei') }}',
+            type: 'POST',
+            data: {
+                production: production,
+                source: source,
+                subProduct: subProduct
+            },
+            success: function (data) {
+                if (data.success) {
+                    if (data['displayImei']) {
+                        $('#sav_imeiNumber').parent('div').parent('div').removeClass('d-none');
+                    } else {
+                        $('#sav_imeiNumber').parent('div').parent('div').addClass('d-none');
+                    }
+                }
+            }
+        })
+    }
+
+    function displayRepairDate() {
+        let statusSetting = $('#sav_statusSetting').val();
+
+        if (statusSetting == 10) {
+            $('#sav_repairDate').parent('div').parent('div').parent('div').removeClass('d-none');
+        } else {
+            $('#sav_repairDate').parent('div').parent('div').parent('div').addClass('d-none');
+        }
+    }
+
+    if ($('#pre_production_features').length > 0) {
+        displayFeatures('pre_production_article_autocomplete', 'pre_production[features][]', 'pre_production_features_');
+    }
+
+    if ($('#production_features').length > 0) {
+        displayFeatures('production_article_autocomplete', 'production[features][]', 'production_features_');
+    }
+
+    $(document).on('change', '#pre_production_article_autocomplete', function () {
+        displayFeatures('pre_production_article_autocomplete', 'pre_production[features][]', 'pre_production_features_');
+    });
+
+    $(document).on('change', '#production_article_autocomplete', function () {
+        displayFeatures('production_article_autocomplete', 'production[features][]', 'production_features_');
+    });
+
+    function displayFeatures(autocomplete, formName, checkbox) {
+        let article = $('#' + autocomplete).val();
+        if (typeof article === 'undefined') {
+            article = $('#article_id').data('article');
+        }
+
+        $('input[name="' + formName + '"]').each(function () {
+            $(this).parent('div').addClass('d-none');
+        });
+
+        $.ajax({
+            url: '{{ path('check_features') }}',
+            type: 'POST',
+            data: {
+                article: article
+            },
+            success: function (data) {
+                if (data.success) {
+                    for (let feature in data.features) {
+                        $('input[name="' + formName + '"]').each(function () {
+                            if ($(this).attr('id') === checkbox + data.features[feature]) {
+                                $(this).parent('div').removeClass('d-none');
+                            }
+                        });
+                    }
+                }
+            }
+        })
+    }
+
+    $(document).on('submit', '.form-production', function (e) {
+        e.preventDefault();
+        let $form = $(this);
+        $.ajax({
+            url: $(this).attr('action'),
+            type: $(this).attr('method'),
+            data: $(this).serialize(),
+            success: function (data) {
+                if (data.success) {
+                    $form.slideUp('slow', function () {
+                        $form.addClass('d-none');
+                    });
+                }
+            }
+        })
+
+        return false;
+    });
+
+    $(document).on('change', '.dealer-class', function () {
+
+        let clientType = document.getElementById('client-type').value;
+        let dealer = $(this).val();
+
+        if (clientType === 'dealer') {
+            $.ajax({
+                url: $(this).data('action'),
+                type: 'POST',
+                data: {
+                    clientType: clientType,
+                    dealer: dealer
+                },
+                success: function (data) {
+                    if (data.success) {
+                        let savCustomerName = $('#sav_customer_name');
+                        let savCustomerEmail = $('#sav_customer_email');
+                        let savCustomerAddress = $('#sav_customer_address');
+                        if (
+                            (savCustomerName.val() === '' || typeof savCustomerName.val() === 'undefined') &&
+                            (savCustomerEmail.val() === '' || typeof savCustomerEmail.val() === 'undefined') &&
+                            (savCustomerAddress.val() === '' || typeof savCustomerAddress.val() === 'undefined')
+                        ) {
+                            savCustomerName.val(data.dealer['name']);
+                            savCustomerEmail.val(data.dealer['email']);
+                            savCustomerAddress.val(data.dealer['address']);
+                            $('#sav_customer_additionalAddress').val(data.dealer['additionalAddress']);
+                            $('#sav_customer_postalCode').val(data.dealer['postalCode']);
+                            $('#sav_customer_country').val(data.dealer['country']);
+                            $('#sav_customer_city').val(data.dealer['city']);
+                        }
+                    }
+                }
+            })
+        }
+    });
+    if ($('.production-class').length > 0) {
+        updateArticle($('.production-class'));
+    }
+
+    $(document).on('change', '.production-class', function () {
+        updateArticle(this);
+    });
+
+    getConnectedUser($('.user-class'));
+
+    $(document).on('change', '.purchase-class', function () {
+        updateArticle($('.production-class'));
+    });
+
+    $(document).on('change', '#sav_article_autocomplete', function () {
+        updateArticle($('.production-class'));
+    });
+
+
+    let codeRma = null;
+    if (null !== document.getElementById('sav_rmaCode')) {
+        codeRma = document.getElementById('sav_rmaCode').value;
+    }
+
+    if (null !== codeRma && codeRma !== '') {
+        document.getElementById('rma_code').innerHTML = codeRma;
+    }
+
+    $(document).on('click', '.new-rma-code', function () {
+        $.ajax({
+            url: $(this).data('action'),
+            type: 'POST',
+            success: function (data) {
+                if (data.success) {
+                    document.getElementById('sav_rmaCode').value = data['rmaCode'];
+                    document.getElementById('rma_code').innerHTML = data['rmaCode'];
+                }
+            }
+        })
+    })
+});
+
+function updateArticle(sav) {
+    let production = $(sav).val();
+    let purchaseDate = document.getElementById('sav_purchaseDate').value;
+    let article = $('#sav_article_autocomplete').val();
+    let savId = $('#sav_id').data('id');
+    console.log(article);
+
+    $.ajax({
+        url: $(sav).data('action'),
+        type: 'POST',
+        data: {
+            production: production,
+            sav: savId,
+            purchaseDate: purchaseDate,
+            article: article
+        },
+        success: function (data) {
+            if (data.success) {
+                $('#article-infos').text(data['infoArticle'])
+                $('#guarantee-infos').text(data['duration'])
+                $('#is-guarantee').text(data['message'])
+                $('#sav_subProductType').val(data['subProductId'])
+                if (data['isGuarantee']) {
+                    $('#guarantee-icon').addClass('fa fa-check')
+                } else {
+                    $('#guarantee-icon').addClass('fa fa-times')
+
+                }
+            } else {
+                $('#article-infos').text('')
+                $('#guarantee-infos').text('')
+                $('#is-guarantee').text('')
+                $('#guarantee-icon').removeClass('fa fa-times fa-check')
+                $('#sav_subProductType').val(data['subProductId'])
+            }
+        }
+    })
+}
+
+function getConnectedUser(user) {
+    $.ajax({
+        url: $(user).data('action'),
+        type: 'POST',
+        success: function (data) {
+            if (data.success) {
+                $('.user-class').val(data['user'])
+            }
+        }
+    })
+}

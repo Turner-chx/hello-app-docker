@@ -1,0 +1,86 @@
+{% extends 'mail/sav_base.html.twig' %}
+
+{% block overlay %}
+    <div class="sub-header">
+        <div class="overlay">
+            <h1>{{ 'app.mail.sav_recap.name'|trans }}</h1>
+        </div>
+    </div>
+{% endblock overlay %}
+
+{% block container %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <p class="text-center">
+                    <span style="font-size: 18px;">{{ 'app.mail.sav_recap.request'|trans({'%client%': client, '%name%': customerName, '%production%': sav.serialNumberCustomer, '%store%': sav.store }) }}</span>
+                </p>
+            </div>
+            <div class="col-sm-6">
+                {% if sav.customer is not null %}
+                    <h2 class="bg-title">{{ 'app.mail.sav_recap.customer_infos'|trans() }}</h2>
+                    <ul>
+                        {% if sav.customer.name is not null %}
+                            <li>
+                                <p>{{ 'app.entity.Sav.follow_my_sav.customer.name'|trans() }}{{ sav.customer.name }}</p>
+                            </li>
+                        {% endif %}
+                        {% if sav.customer.email is not null %}
+                            <li>
+                                <p>{{ 'app.entity.Sav.follow_my_sav.customer.email'|trans() }}{{ sav.customer.email }}</p>
+                            </li>
+                        {% endif %}
+                        {% if sav.customer.phoneNumber is not null %}
+                            <li>
+                                <p>{{ 'app.entity.Sav.follow_my_sav.customer.phone_number'|trans() }}{{ sav.customer.phoneNumber }}</p>
+                            </li>
+                        {% endif %}
+                        {% if sav.customer.name is not null %}
+                            <li>
+                                <p>
+                                    {{ 'app.entity.Sav.follow_my_sav.delivery_address'|trans() }} :<br>
+                                    {{ sav.customer.name }}<br>
+                                    {% if sav.customer.address is not null%}{{ sav.customer.address }} {% if sav.customer.additionalAddress is not null %} {{ sav.customer.additionalAddress }}{% endif %}<br>{% endif %}
+                                    {% if sav.customer.postalCode is not null %}{{ sav.customer.postalCode }}{% if sav.customer.city is not null %} {{ sav.customer.city }}{% endif %}<br>{% endif %}
+                                    {% if sav.customer.country is not null %}{{ sav.customer.country|country }}{% endif %}
+                                </p>
+                            </li>
+                        {% endif %}
+                    </ul>
+                {% endif %}
+            </div>
+            <div class="col-sm-6">
+                <h2 class="bg-title">{{ 'app.mail.sav_recap.sav_infos'|trans() }}</h2>
+                <ul>
+                    {% if sav.purchaseDate is not null %}
+                        <li>
+                            <p>{{ 'app.entity.Sav.follow_my_sav.purchase_date'|trans() }}{{ sav.purchaseDate|date('d/m/Y') }}</p>
+                        </li>
+                    {% endif %}
+                    {% if sav.imeiNumber is not null %}
+                        <li>
+                            <p>{{ 'app.entity.Sav.follow_my_sav.imei'|trans() }}{{ sav.imeiNumber }}</p>
+                        </li>
+                    {% endif %}
+                    {% if sav.natureSetting is not null %}
+                        <li>
+                            <p>{{ 'app.entity.Sav.follow_my_sav.nature_setting'|trans() }}</p>
+                            <ul>
+                                {% for nature in sav.natureSetting %}
+                                    <li>{{ nature }}</li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endif %}
+                    {% if sav.description is not null %}
+                        <li>
+                            <p class="text-justify">{{ 'app.entity.Sav.follow_my_sav.description'|trans() }}<br>
+                                {{ sav.description }}
+                            </p>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock container %}

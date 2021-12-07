@@ -1,0 +1,138 @@
+{% extends '@SonataAdmin/CRUD/base_edit.html.twig' %}
+
+{% use 'admin/sav/CRUD/base_edit_form.html.twig' with form as parentForm %}
+
+{% block form %}
+    {% if object is defined %}
+        {% set sav = object %}
+        {% if sav.id is not null %}
+            <h1>SAV - {{ sav.id }}{% if sav.statusSetting is not null %} - {{ sav.statusSetting }}{% endif %}</h1>
+            {% if null != sav.secretCode %}
+                <a target="_blank" style="margin-bottom:15px;padding-bottom:15px;font-size:24px;"
+                   href="{{ absolute_url(path('follow-my-sav', {'codeSav': sav.secretCode})) }}">{{ absolute_url(path('follow-my-sav', {'codeSav': sav.secretCode})) }}</a>
+            {% endif %}
+            {% if null != sav.statusSetting and sav.statusSetting.displayDivaltoReplaceButton %}
+                <a id="boutonMailCommercial" class="btn btn-primary pull-right"
+                   style="background-color: {% if sav.emailSent is null or sav.emailSent == false %}red{% else %}green{% endif %};"
+                   href="{{ admin.generateUrl('send_mail_commercial', {'id': sav.id}) }}">{{ 'app.divalto.sav.send_email'|trans }}</a>
+                <a id="sendToDivalto" class="btn btn-primary pull-right"
+                   style="background-color: {% if sav.divaltoNumber is null %}red{% else %}green{% endif %};"
+                   href="{{ admin.generateUrl('send_to_divalto', {'id': sav.id}) }}">{{ 'app.divalto.sav.send_replaced_production'|trans }} <img id="loader" style="height:20px;" class="hide" src="{{ asset('images/frontend/loader.gif') }}" alt="Chargement..."></a>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+
+    {{ block('parentForm') }}
+    <script>
+    {#    $('#boutonMailCommercial').click(function () {#}
+    {#        window.onbeforeunload = null;#}
+    {#        var ref = '';#}
+
+    {#        {% for savArticle in sav.savArticles %}#}
+    {#        ref += 'Ref : {{ savArticle.article is not null ? savArticle.article : savArticle.unknownArticle }}, Qté : 1 %0D';#}
+    {#        {% endfor %}#}
+
+    {#        var nomRevendeur = '{{ sav.dealer }}';#}
+    {#        var nomRevendeurUFFinal = '{{ sav.customer }}';#}
+    {#        var nomClient = '{{ sav.customer }}';#}
+    {#        var idsav = '{{ null != sav.divaltoNumber ? sav.divaltoNumber : sav.id }}';#}
+
+    {#        var objetMailCommercial, bodyMailCommercial = "";#}
+
+
+    {#        {% if sav.clientType == 'customer' %}#}
+    {#        {% if sav.divaltoNumber is null %}#}
+    {#        objetMailCommercial = "SAV – REF DOSSIER " + idsav;#}
+    {#        bodyMailCommercial = "Bonjour,%0D %0D" +#}
+    {#            "Vous avez contacté notre Service après-vente. %0D" +#}
+    {#            "Un dossier a été ouvert sous la référence " + idsav + " concernant le(s) produit(s) ci-dessous %0D %0D" +#}
+    {#            "%0D Ref : " + idsav + "," +#}
+    {#            "%0D Problème rencontré : " + idsav + "," +#}
+    {#            "%0D Qté : " + idsav +#}
+
+    {#            "%0D %0D Nous avons été ravis de pouvoir vous aider et vous apporter une solution. Le dossier est clôturé." +#}
+    {#            "%0D Souhaitant vous avoir apporté entière satisfaction," +#}
+    {#            "%0D Cordialement" +#}
+
+    {#            '%0D %0D Ceci est un message automatique : merci de ne pas y répondre';#}
+    {#        {% else %}#}
+    {#        objetMailCommercial = "SAV AVEC ECHANGE – REF DOSSIER " + idsav;#}
+    {#        bodyMailCommercial = "Bonjour,%0D %0D" +#}
+    {#            "Vous avez contacté notre Service après-vente. %0D" +#}
+    {#            "Un dossier a été ouvert sous la référence : " + idsav + " %0D" +#}
+    {#            "Je vous informe que nous avons procédé au remplacement gracieux des produits ci-dessous, avec expédition à votre adresse : %0D " +#}
+    {#            " %0D Ref: " + ref + ", " +#}
+    {#            " %0D Problème rencontré :" + idsav + ", " +#}
+    {#            " %0D Quantité : " + idsav + "  %0D " +#}
+    {#            "En espérant conserver votre fidélité, %0D" +#}
+    {#            "Cordialement %0D %0D" +#}
+    {#            "Ceci est un message automatique : merci de ne pas y répondre";#}
+    {#        {% endif %}#}
+    {#        {% else %}#}
+    {#        {% if sav.divaltoNumber is null %}#}
+    {#        objetMailCommercial = "Remplacement cartouche chez le revendeur - Autorisation UP" + idsav;#}
+    {#        bodyMailCommercial = "Bonjour,%0D %0D" +#}
+    {#            "Votre client " + idsav + " a contacté notre Service après-vente. %0D" +#}
+    {#            "Un dossier a été ouvert sous la référence " + idsav + " concernant le(s) produit(s) ci- dessous %0D %0D" +#}
+    {#            "Ref : " + id + ","#}
+    {#        "Problème rencontré : " + idsav + "," +#}
+    {#        "Qté : " + idsav + "," +#}
+
+    {#        "%0D %0D Le souci rencontré par votre client a pu être réglé sans échange de produit  et le dossier est clôturé." +#}
+    {#        "Soucieux de vous apporter le meilleur service," +#}
+    {#        "Cordialement"#}
+
+
+    {#        "Ceci est un message automatique : merci de ne pas y répondre" +#}
+    {#        "En cas de question, veuillez vous munir de la référence de dossier et contacter votre contact commercial habituel .";#}
+    {#        {% else %}#}
+
+    {#        {% endif %}#}
+    {#        {% endif %}#}
+    {#        // var bodyUFghjgj = 'Bonjour, \n \n Je t\’informe que nous avons procédé au remplacement de ' + nbProduits[3] + ' produit(s) par colissimo / TNT \n ' + ref + ' \n NOM DU REVENDEUR : ' + nomRevendeurUFFinal + ' \n NOM DU CLIENT FINAL : ' + nomClientUF + ' \n \n Le numéro de l\'autorisation d\'échange est le UP' + idsav + ' \n LIVRAISON UTILISATEUR FINAL. \n \n COMMANDE DEJA SAISIE SUR DIVALTO. \n \n Merci de prévenir ton client et de noter que j\'ai déjà eu le revendeur en ligne. \n OU \n Merci de transmettre le mail à ton client et de noter que je n\'ai pas eu le revendeur en ligne.';#}
+
+    {#        {% set mails = sav.source.emails %}#}
+    {#        let cc = '';#}
+    {#        {% for mail in mails %}#}
+    {#        {% if loop.last %}#}
+    {#        cc += '{{ mail.email }}';#}
+    {#        {% else %}#}
+    {#        cc += '{{ mail.email }};';#}
+    {#        {% endif %}#}
+    {#        {% endfor %}#}
+    {#        let to = '{{ sav.source.dealerEmail }}';#}
+    {#        window.location.href = "mailto:" + to + "?subject=" + objetMailCommercial + "&cc=" + cc + "&body=" + bodyMailCommercial + "";#}
+    {#        $.ajax({#}
+    {#            type: 'POST',#}
+    {#            data: ({#}
+    {#                sav: '{{ sav.id }}',#}
+    {#            }),#}
+    {#            url: '{{ path('sav_email_sent') }}',#}
+    {#            success: function (data) {#}
+    {#                window.onbeforeunload = null;#}
+    {#                window.location.reload();#}
+    {#            },#}
+    {#            error: function () {#}
+    {#                console.log("Erreur ref");#}
+    {#            }#}
+    {#        });#}
+    {#    });#}
+    </script>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock stylesheets %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        jQuery(window).ready(function () {
+            let $messageBtn = jQuery('#add_message_btn');
+            if ($messageBtn.length > 0) {
+                $messageBtn.click();
+            }
+        });
+    </script>
+    <script>{% include 'admin/admin.js.twig' %}</script>
+{% endblock javascripts %}

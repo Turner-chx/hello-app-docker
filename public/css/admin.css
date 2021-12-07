@@ -1,0 +1,103 @@
+.button-icon {
+    -webkit-appearance: unset;
+}
+
+p.message {
+    box-shadow: 2px 5px 27px 0 rgba(0, 0, 0, 0.06);
+    padding: 15px;
+}
+
+#message_form_message {
+    resize: none;
+    min-height: 200px;
+}
+
+.isDisabled {
+    color: currentColor;
+    cursor: not-allowed;
+    opacity: 0.5;
+    text-decoration: none;
+}
+
+.nullable-control {
+    display: none;
+}
+
+.box-triangle {
+    width: 10em;
+    height: 6em;
+    background-color: transparent;
+    position: relative;
+}
+
+.box-triangle::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 1.5em;
+    border-left-color: #575656;
+    border-top-color: var(--color-primary);
+}
+
+.box-triangle-new {
+    width: 10em;
+    height: 6em;
+    background-color: transparent;
+    position: relative;
+}
+
+.box-triangle-new::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 1.5em;
+    border-left-color: var(--color-primary);
+    border-top-color: var(--color-primary);
+}
+
+.box-triangle-message {
+    width: 10em;
+    height: 6em;
+    background-color: transparent;
+    position: relative;
+}
+
+.box-triangle-message::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 1.5em;
+    border-left-color: #575656;
+    border-top-color: #575656;
+}
+
+#list-form-filters-header > em > small {
+    color: #92BB1F;
+}
+
+.form-widget input.form-control:focus, .form-widget select.form-control:focus, .form-widget textarea.form-control:focus {
+    box-shadow: 0 0 0 0.2rem rgba(168, 204, 7, 0.25);
+    border-color: rgba(168, 204, 7, 0.25);
+}
+
+.button-delete-filter {
+    background-color: #575656 !important;
+    color: var(--text-on-primary) !important;
+}
+
+.button-delete-filter:hover {
+    color: var(--text-on-primary) !important;
+}
+
+.red-color {
+    color: red !important;
+}

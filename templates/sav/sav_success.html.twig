@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'app.form.title.meta_title'|trans }}{% endblock %}
+
+{% trans_default_domain 'messages' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/iframe.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/sav-success.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div id="container" class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h2 class="bg-title text-center">{{ 'app.entity.Sav.url_my_sav.success'|trans() }}</h2>
+                <br><br>
+                <p class="text-center">
+                    <strong>
+                        <span style="font-size: 20px;">{{ 'app.entity.Sav.url_my_sav.ref'|trans() }}</span>
+                        <span class="color-green font-big">{{ savId }}</span>
+                    </strong>
+                </p>
+                <p class="text-center">
+                    <strong>
+                        <span style="font-size: 20px;">{{ 'app.entity.Sav.url_my_sav.url'|trans() }}</span>
+                    </strong>
+                </p>
+                <p class="text-center">
+                    <a href="{{ absolute_url(path('follow-my-sav', {'codeSav': code})) }}"
+                       target="_blank">{{ absolute_url(path('follow-my-sav', {'codeSav': code})) }}</a>
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/iframe.js') }}"></script>
+    <script>
+        window.scroll({
+            top: 0,
+            left: 0,
+            behavior: 'smooth'
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,186 @@
+* {
+    font-family: 'Lato', sans-serif;
+}
+
+body {
+    color: rgb(60, 60, 60) !important;
+    background-color: #f4f4f4;
+}
+
+.sub-header {
+    margin-bottom: 80px;
+    text-align: center;
+    color: white;
+    background-image: url(/images/banniere-sav.jpg);
+    min-height: 310px;
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+    position: relative;
+    border-bottom: 2px solid #009FE3;
+}
+
+.sub-header .overlay {
+    padding: 80px;
+    width: 100%;
+    height: 100%;
+}
+
+.sub-header:after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -15px;
+    width: 0;
+    height: 0;
+    border-top: solid 30px #009FE3;
+    border-left: solid 30px transparent;
+    border-right: solid 30px transparent;
+}
+
+h1 {
+    font-size: 50px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    width: 100%;
+    background-color: transparent;
+    color: #009FE3;
+    line-height: 60px;
+    margin-bottom: 30px;
+}
+
+h2.bg-title {
+    color: #009FE3;
+    font-size: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+    margin-top: 30px;
+    width: 100%;
+    text-align: center;
+    line-height: 36px;
+}
+
+h3.bg-title {
+    font-size: 18px !important;
+    font-weight: 700;
+    color: #000;
+    text-align: center;
+}
+
+thead th {
+    border-top-width: 0 !important;
+}
+
+.messaging > div > span {
+    font-style: italic;
+    font-weight: bold;
+    width: 100%;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.btn.submit-button {
+    border-radius: 0;
+    background-color: #009FE3;
+    font-weight: 700;
+    color: white;
+    font-size: 16px;
+    margin-bottom: 80px;
+}
+
+input {
+    border: 1px solid #e5e5e5;
+    outline: none;
+    color: #888;
+    margin: 0;
+    height: 44px;
+    display: block;
+    background: #fdfdfd;
+    max-width: 100%;
+    padding: 6px 4px 6px 10px;
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 0 0.2rem rgba(168, 204, 7, 0.25);
+    border-color: rgba(168, 204, 7, 0.25);
+}
+
+textarea {
+    resize: none;
+    min-height: 200px;
+}
+
+a:hover {
+    text-decoration: none !important;
+}
+
+a {
+    color: #3c3c3c;
+}
+
+a:hover, a:focus {
+    color: #009FE3;
+}
+
+p.message {
+    box-shadow: 2px 5px 27px 0 rgba(0, 0, 0, 0.06);
+    padding: 15px;
+}
+
+footer {
+    margin: 50px auto 0;
+    width: 100%;
+    color: white;
+    text-align: center;
+    background-color: #292929;
+    padding: 80px 0;
+    font-weight: normal;
+}
+
+.brands {
+    margin-top: 10px;
+    margin-bottom: 60px;
+}
+
+footer .brands > div {
+    margin-left: 55px;
+}
+
+.brands-item {
+    margin-right: 20px;
+    padding-right: 0;
+}
+
+a {
+    color: #3c3c3c;
+}
+
+/*.message-title-right {*/
+/*    padding-right: 15px;*/
+/*}*/
+
+/*.message-title-left {*/
+/*    padding-left: 15px;*/
+/*}*/
+
+.p-file {
+    margin-bottom: 0;
+}

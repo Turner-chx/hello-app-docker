@@ -1,0 +1,1 @@
+update sav set status_setting_id = 3 where status_setting_id = 4;

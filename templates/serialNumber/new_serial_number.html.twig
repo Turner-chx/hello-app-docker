@@ -1,0 +1,25 @@
+{% extends '@EasyAdmin/default/layout.html.twig' %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block main %}
+    {% block entity_form %}
+        {{ form_start(form) }}
+            <div class="row" xmlns="http://www.w3.org/1999/html">
+                <div class="field-group col-12">
+                    <fieldset>
+                        <legend class="with-icon"><i class="fa fa-barcode"></i> {{ 'app.entity.SerialNumberLmeco.name'|trans() }}</legend>
+                        <div class="row">
+                            <div class="col-12">
+                                {{ form_row(form.quantityCreated) }}
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary action-save">
+                <span class="btn-label">{{ 'app.entity.SerialNumberLmeco.action.submit'|trans }}</span>
+            </button>
+        {{ form_widget(form._token) }}
+        {{ form_end(form) }}
+    {% endblock entity_form %}
+{% endblock main %}

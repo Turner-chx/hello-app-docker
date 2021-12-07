@@ -1,0 +1,28 @@
+fm_elfinder:
+    assets_path: components
+    instances:
+        default:
+            locale: '%locale%'
+            editor: ckeditor # other choices are tinymce or simple
+#            include_assets: true
+            relative_path: true
+            fullscreen: true
+            connector:
+                roots:       # at least one root must be defined
+                    uploads:
+                        driver: LocalFileSystem
+                        path: uploads
+        form:
+            locale: '%locale%'
+            editor: form
+            fullscreen: true
+#            include_assets: true
+            connector:
+                debug: false
+                roots:
+                    uploads:
+                        driver: LocalFileSystem
+                        path: uploads
+                        upload_allow: ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/zip', 'application/octet-stream', 'application/x-rar-compressed']
+                        upload_deny: ['all']
+                        upload_max_size: 10M

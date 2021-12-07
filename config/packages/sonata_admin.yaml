@@ -1,0 +1,88 @@
+sonata_admin:
+  show_mosaic_button: false
+  persist_filters: true
+  global_search:
+    empty_boxes: hide
+  options:
+    html5_validate: true     # enable or disable html5 form validation
+    confirm_exit: false     # enable or disable a confirmation before navigating away
+    js_debug: false    # enable or disable to show javascript debug messages
+    use_select2: true     # enable or disable usage of the Select2 jQuery library
+    use_icheck: true     # enable or disable usage of the iCheck library
+    use_bootlint: true    # enable or disable usage of Bootlint
+    use_stickyforms: true     # enable or disable the floating buttons
+    form_type: standard # can also be 'horizontal'
+    legacy_twig_text_extension: false
+  title: 'Intranet qualité Lama'
+  title_logo: '/images/backend/logo-lama-france.svg'
+  dashboard:
+    groups:
+      admin.menu.article:
+        on_top: true
+        label: app.admin.menu.article
+        label_catalogue: messages
+        icon: '<i class="fa fa-shopping-basket"></i>'
+        roles: [ 'ROLE_ADMIN' ]
+        items:
+          - admin.article
+      admin.menu.sav:
+        keep_open: true
+        label: app.admin.menu.sav
+        label_catalogue: messages
+        icon: '<i class="fa fa-exchange"></i>'
+        roles: [ 'ROLE_ADMIN' ]
+        items:
+          - admin.sav_new
+          - admin.sav
+      admin.menu.user:
+        keep_open: true
+        label: app.admin.menu.user_title
+        label_catalogue: messages
+        icon: '<i class="fa fa-user"></i>'
+        roles: [ 'ROLE_ADMIN' ]
+        items:
+          - admin.user
+          - admin.customer
+          - admin.dealer
+      admin.menu.parameter_article:
+        keep_open: true
+        label: app.admin.menu.parameter_article
+        label_catalogue: messages
+        icon: '<i class="fa fa-cogs"></i>'
+        roles:  [ 'ROLE_ADMIN' ]
+        items:
+          - admin.color
+          - admin.brand
+          - admin.product_type
+          - admin.gamme
+          - admin.oem
+      admin.menu.parameter_sav:
+        keep_open: true
+        label: app.admin.menu.parameter_sav
+        label_catalogue: messages
+        icon: '<i class="fa fa-cogs"></i>'
+        roles: [ 'ROLE_ADMIN' ]
+        items:
+          - admin.source
+          - admin.status_setting
+          - admin.nature_setting
+  templates:
+    layout: 'admin/standard_layout.html.twig'
+    dashboard: 'admin/dashboard.html.twig'
+  assets:
+    extra_stylesheets:
+      - bundles/sonatatranslation/css/sonata-translation.css
+      - css/popup.min.css
+      - css/admin.css
+    extra_javascripts:
+      - js/popup.min.js
+      - js/admin.js
+  security:
+    handler: sonata.admin.security.handler.role
+    role_admin: ROLE_ADMIN
+    role_super_admin: ROLE_SUPER_ADMIN
+
+sonata_block:
+  blocks:
+    sonata.admin.block.admin_list:
+      contexts: [ admin ]

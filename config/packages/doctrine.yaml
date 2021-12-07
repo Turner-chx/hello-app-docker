@@ -1,0 +1,34 @@
+doctrine:
+  dbal:
+    url: '%env(resolve:DATABASE_URL)%'
+
+    # IMPORTANT: You MUST configure your server version,
+    # either here or in the DATABASE_URL env var (see .env file)
+    server_version: '%env(resolve:SERVER_VERSION)%'
+  orm:
+    auto_generate_proxy_classes: true
+    naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
+    auto_mapping: true
+    mappings:
+      SonataUserBundle: ~
+      FOSUserBundle: ~
+      App:
+        is_bundle: false
+        type: annotation
+        dir: '%kernel.project_dir%/src/Entity'
+        prefix: 'App\Entity'
+        alias: App
+    dql:
+      string_functions:
+        DATE_FORMAT: DoctrineExtensions\Query\Mysql\DateFormat
+        CAST: DoctrineExtensions\Query\Mysql\Cast
+        MONTH: DoctrineExtensions\Query\Mysql\Month
+        YEAR: DoctrineExtensions\Query\Mysql\Year
+        DAY: DoctrineExtensions\Query\Mysql\Day
+        NOW: DoctrineExtensions\Query\Mysql\Now
+        HOUR: DoctrineExtensions\Query\Mysql\Hour
+        MINUTE: DoctrineExtensions\Query\Mysql\Minute
+        WEEK: DoctrineExtensions\Query\Mysql\Week
+        DATEDIFF: DoctrineExtensions\Query\Mysql\DateDiff
+        REPLACE: DoctrineExtensions\Query\Mysql\Replace
+

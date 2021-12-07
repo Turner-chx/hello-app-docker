@@ -1,0 +1,435 @@
+{% block sonata_pre_fieldsets %}
+<div class="row">
+    {% endblock %}
+
+    {% block sonata_tab_content %}
+        <div class="col-md-12">
+            {% set tab_prefix = 'tab_' ~ admin.uniqid ~ '_' ~ random() %}
+            {% set tab_query_index = app.request.query.get('_tab', 0)|split("_")|last %}
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs" role="tablist">
+                    {% set _tab_name_sav = tab_prefix ~ '_0' %}
+                    {% set _tab_name_messagings = tab_prefix ~ '_1' %}
+                    {% set _tab_name_history = tab_prefix ~ '_2' %}
+                    <li{% if null == app.request.query.get('_tab') or (app.request.query.has('_tab') and app.request.query.get('_tab') == _tab_name_sav) or tab_query_index == '0' %} class="active"{% endif %}>
+                        <a href="#{{ _tab_name_sav }}" class="changer-tab"
+                           aria-controls="{{ _tab_name_sav }}" data-toggle="tab">
+                            <i class="fa fa-exclamation-circle has-errors hide"
+                               aria-hidden="true"></i><i
+                                    class="fa fa-files-o"></i> {{ 'app.entity.Sav.form.sav'|trans }}
+                        </a>
+                    </li>
+                    <li{% if app.request.query.has('_tab') and app.request.query.get('_tab') == _tab_name_messagings or tab_query_index == '1' %} class="active"{% endif %}>
+                        <a href="#{{ _tab_name_messagings }}" class="changer-tab sav-edit-messagings"
+                           aria-controls="{{ _tab_name_messagings }}" data-toggle="tab">
+                            <i class="fa fa-exclamation-circle has-errors hide"
+                               aria-hidden="true"></i><i
+                                    class="fa fa-comments"></i> {{ 'app.entity.Sav.form.message'|trans }}
+                        </a>
+                    </li>
+                    <li{% if app.request.query.has('_tab') and app.request.query.get('_tab') == _tab_name_history or tab_query_index == '2' %} class="active"{% endif %}>
+                        <a href="#{{ _tab_name_history }}" class="changer-tab"
+                           aria-controls="{{ _tab_name_history }}" data-toggle="tab">
+                            <i class="fa fa-exclamation-circle has-errors hide"
+                               aria-hidden="true"></i><i
+                                    class="fa fa-history"></i> {{ 'app.entity.Sav.form.history_sav'|trans }}
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content sav-edit" data-sav-id="{{ objectId }}">
+                    <div class="tab-pane fade {% if null == app.request.query.get('_tab') or (app.request.query.has('_tab') and app.request.query.get('_tab') == _tab_name_sav) or tab_query_index == '0' %}in active{% endif %}"
+                         id="{{ _tab_name_sav }}">
+                        <div class="box-body container-fluid">
+                            <div class="sonata-ba-collapsed-fields">
+                                <div class="col-md-6">
+                                    <div class="box box-primary">
+                                        <div class="box-header">
+                                            <h4 class="box-title">
+                                                {{ 'app.entity.Sav.form.customer_info'|trans }}
+                                            </h4>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="sonata-ba-collapsed-fields">
+                                                {{ form_row(form.customer) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="box box-primary">
+                                        <div class="box-header">
+                                            <h4 class="box-title">
+                                                {{ 'app.entity.Sav.form.purchase_proof'|trans }}
+                                            </h4>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="sonata-ba-collapsed-fields">
+                                                <div class="form-group">
+                                                    <label class="control-label">
+                                                        {{ 'app.entity.Sav.form.proof_of_purchase'|trans }}
+                                                    </label>
+                                                    <div class="sonata-ba-field">
+                                                        {% for fileProof in sav.savFilesProof %}
+                                                            <div class="col-md-12 text-center align-middle"
+                                                                 style="padding: 8px; border: 1px solid #f4f4f4;">
+                                                                {% if isImage('uploads/files/' ~ fileProof.name) %}
+                                                                    <a class="image-popup"
+                                                                       href="{{ vich_uploader_asset(fileProof, 'file') }}">
+                                                                        <img src="{{ vich_uploader_asset(fileProof, 'file') }}"
+                                                                             style="max-height: 300px; max-width: 300px;"
+                                                                             alt="{{ fileProof.name }}">
+                                                                    </a>
+                                                                {% else %}
+                                                                    <a target="_blank"
+                                                                       href="{{ vich_uploader_asset(fileProof, 'file') }}"><i
+                                                                                class="fa fa-file-o"
+                                                                                aria-hidden="true"></i> {{ fileProof.name }}
+                                                                    </a>
+                                                                {% endif %}
+                                                            </div>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                                {{ form_row(form.store) }}
+                                                {{ form_row(form.divaltoNumber) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="box box-primary">
+                                        <div class="box-header">
+                                            <h4 class="box-title">
+                                                {{ 'app.entity.Sav.form.proof'|trans }}
+                                            </h4>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="sonata-ba-collapsed-fields">
+                                                {{ form_row(form.customerPrinter) }}
+                                                <div class="form-group">
+                                                    <label class="control-label">
+                                                        {{ 'app.entity.Sav.form.failure'|trans }}
+                                                    </label>
+                                                    <div class="sonata-ba-field">
+                                                        {% for savArticle in sav.savArticles %}
+                                                            {% for fileProof in savArticle.filesProof %}
+                                                                <div class="col-md-4 text-center"
+                                                                     style="padding: 8px; border: 1px solid #f4f4f4; min-height: 100px; max-height: 100px;">
+                                                                    {% if isImage('uploads/files/' ~ fileProof.name) %}
+                                                                        <a class="image-popup"
+                                                                           href="{{ vich_uploader_asset(fileProof, 'file') }}">
+                                                                            <img src="{{ vich_uploader_asset(fileProof, 'file') }}"
+                                                                                 style="max-height: 80px; max-width: 80px;"
+                                                                                 alt="{{ fileProof.name }}">
+                                                                        </a>
+                                                                    {% else %}
+                                                                        <a target="_blank"
+                                                                           href="{{ vich_uploader_asset(fileProof, 'file') }}"><i
+                                                                                    class="fa fa-file-o"
+                                                                                    aria-hidden="true"></i> {{ fileProof.name }}
+                                                                        </a>
+                                                                    {% endif %}
+                                                                </div>
+                                                            {% endfor %}
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="box box-primary">
+                                        <div class="box-header">
+                                            <h4 class="box-title">
+                                                {{ 'app.entity.Sav.form.products'|trans }}
+                                            </h4>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="sonata-ba-collapsed-fields">
+                                                <div class="col-md-7">
+                                                    <div class="sonata-ba-collapsed-fields">
+                                                        <div class="form-group">
+                                                            <label class="control-label">
+                                                                {{ 'app.entity.Sav.field.sav_article'|trans }}
+                                                            </label>
+                                                            <div class="sonata-ba-field sonata-ba-field-inline-table">
+                                                                <div class="field-container">
+                                                                                <span>
+                                                                                    <table class="table table-bordered">
+                                                                                        <thead>
+                                                                                            <tr>
+                                                                                                <th>{{ 'app.entity.Sav.field.article'|trans }}</th>
+                                                                                                <th>{{ 'app.entity.Sav.field.natures_setting'|trans }}</th>
+                                                                                                <th>{{ 'app.entity.Sav.field.article_serial_number'|trans }}</th>
+                                                                                                <th>{{ 'app.entity.Sav.field.article_serial_number2'|trans }}</th>
+                                                                                                <th>{{ 'app.entity.Sav.field.article_image'|trans }}</th>
+                                                                                            </tr>
+                                                                                        </thead>
+                                                                                        <tbody class="sonata-ba-tbody ui-sortable">
+                                                                                            {% for savArticle in sav.savArticles %}
+                                                                                                <tr>
+                                                                                                    <td class="control-group">
+                                                                                                        {% if savArticle.article is not null %}
+                                                                                                            {{ savArticle.article }}
+                                                                                                        {% else %}
+                                                                                                            {{ savArticle.unknownArticle }}
+                                                                                                        {% endif %}
+                                                                                                    </td>
+                                                                                                    <td class="control-group">
+                                                                                                        {{ savArticle.displayNatureSetting|raw }}
+                                                                                                    </td>
+                                                                                                    <td class="control-group">
+                                                                                                        {{ savArticle.serialNumber }}
+                                                                                                    </td>
+                                                                                                    <td class="control-group">
+                                                                                                        {{ savArticle.serialNumber2 }}
+                                                                                                    </td>
+                                                                                                    <td class="control-group text-center align-middle">
+                                                                                                        {% if savArticle.article is null %}
+                                                                                                            {% if savArticle.fileUnknown is not null %}
+                                                                                                                {% if isImage('uploads/files/' ~ savArticle.fileUnknown.name) %}
+                                                                                                                    <a class="image-popup"
+                                                                                                                       href="{{ vich_uploader_asset(savArticle.fileUnknown, 'file') }}">
+                                                                                                                    <img src="{{ vich_uploader_asset(savArticle.fileUnknown, 'file') }}"
+                                                                                                                         style="max-height: 80px; max-width: 80px;"
+                                                                                                                         alt="{{ savArticle.fileUnknown.name }}">
+                                                                                                                    </a>
+                                                                                                                {% else %}
+                                                                                                                    <a target="_blank"
+                                                                                                                       href="{{ vich_uploader_asset(savArticle.fileUnknown, 'file') }}"><i
+                                                                                                                                class="fa fa-file-o"
+                                                                                                                                aria-hidden="true"></i> {{ savArticle.fileUnknown.name }}</a>
+                                                                                                                {% endif %}
+                                                                                                            {% endif %}
+                                                                                                        {% endif %}
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                            {% endfor %}
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    {{ form_row(form.replacementArticles) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="box box-primary">
+                                        <div class="box-header">
+                                            <h4 class="box-title">
+                                                {{ 'app.entity.Sav.form.description'|trans }}
+                                            </h4>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="sonata-ba-collapsed-fields">
+                                                <div class="col-md-12">
+                                                    {{ form_row(form.description) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="box box-primary">
+                                        <div class="box-header">
+                                            <h4 class="box-title">
+                                                {{ 'app.entity.Sav.form.other'|trans }}
+                                            </h4>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="sonata-ba-collapsed-fields">
+                                                <div class="col-md-6">
+                                                    {{ form_row(form.createdAt) }}
+                                                    {{ form_row(form.source) }}
+                                                    {{ form_row(form.statusSetting) }}
+                                                </div>
+                                                <div class="col-md-6">
+                                                    {{ form_row(form.user) }}
+                                                    {{ form_row(form.carrierCode) }}
+                                                    {# {{ form_row(form.clientType) }} #}
+                                                    {{ form_row(form.dealer) }}
+                                                </div>
+                                                <div class="col-md-12">
+                                                    {{ form_row(form.comment) }}
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="box box-primary">
+                                        <div class="box-header">
+                                            <h4 class="box-title">
+                                                {{ 'app.entity.Sav.form.link'|trans }}
+                                            </h4>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="sonata-ba-collapsed-fields">
+                                                {{ form_row(form.jiraLink) }}
+                                            </div>
+                                            {% if null != sav.jiraLink %}
+                                                <a href="{{ sav.jiraLink }}"
+                                                   target="_blank">{{ 'app.entity.Sav.form.go_to_link'|trans }}</a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade {% if app.request.query.has('_tab') and app.request.query.get('_tab') == _tab_name_messagings or tab_query_index == '1' %}in active{% endif %}"
+                         id="{{ _tab_name_messagings }}">
+                        <div class="box-body container-fluid">
+                            <div class="sonata-ba-collapsed-fields">
+                                <div class="col-md-12">
+                                    <div class="box box-primary">
+                                        <div class="box-header">
+                                            <h4 class="box-title">
+                                                {{ 'app.entity.Sav.form.message'|trans }}
+                                            </h4>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="sonata-ba-collapsed-fields">
+                                                <div class="form-group">
+                                                    <label class="control-label">
+                                                        {{ 'app.entity.Sav.form.history_message'|trans }}
+                                                    </label>
+                                                    <div class="sonata-ba-field sonata-ba-field-inline-table">
+                                                        <div class="field-container">
+                                                                        <span>
+                                                                            <table class="table table-bordered">
+                                                                                <tbody class="sonata-ba-tbody ui-sortable">
+                                                                                    {% for message in sav.messagings %}
+                                                                                        <tr>
+                                                                                            {% if message.sender != 'lama' %}
+                                                                                                <td class="control-group text-left">
+                                                                                                    {% if message.sender is not null %}
+                                                                                                        <strong>{{ message.createdAt|date('d/m/Y H:i') }} - {{ message.senderEnum|trans() }}</strong>
+                                                                                                    {% endif %}
+                                                                                                    {{ message.message|raw }}
+                                                                                                    <ul>
+                                                                                                        {% for file in message.files %}
+                                                                                                            <li>
+                                                                                                                <a target="_blank"
+                                                                                                                   href="{{ vich_uploader_asset(file, 'file') }}"><i
+                                                                                                                            class="fa fa-file-o"
+                                                                                                                            aria-hidden="true"></i> {{ file.name }}
+                                                                                                                </a>
+                                                                                                            </li>
+                                                                                                        {% endfor %}
+                                                                                                    </ul>
+                                                                                                </td>
+                                                                                            {% else %}
+                                                                                                <td class="control-group text-right">
+                                                                                                    <strong>{{ message.createdAt|date('d/m/Y H:i') }} - {{ message.senderEnum|trans() }}</strong>
+                                                                                                    {{ message.message|raw }}
+                                                                                                    <ul>
+                                                                                                        {% for file in message.files %}
+                                                                                                            <li>
+                                                                                                                <a target="_blank"
+                                                                                                                   href="{{ vich_uploader_asset(file, 'file') }}"><i
+                                                                                                                            class="fa fa-file-o"
+                                                                                                                            aria-hidden="true"></i> {{ file.name }}
+                                                                                                                </a>
+                                                                                                            </li>
+                                                                                                        {% endfor %}
+                                                                                                    </ul>
+                                                                                                </td>
+                                                                                            {% endif %}
+                                                                                        </tr>
+                                                                                    {% endfor %}
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {{ form_row(form.messagings) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade {% if app.request.query.has('_tab') and app.request.query.get('_tab') == _tab_name_history or tab_query_index == '2' %}in active{% endif %}"
+                         id="{{ _tab_name_history }}">
+                        <div class="box-body container-fluid">
+                            <div class="sonata-ba-collapsed-fields">
+                                <div class="col-md-12">
+                                    <div class="box box-primary">
+                                        <div class="box-header">
+                                            <h4 class="box-title">
+                                                {{ 'app.entity.Sav.form.history_sav'|trans }}
+                                            </h4>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="sonata-ba-collapsed-fields">
+                                                <div class="form-group">
+                                                    <label class="control-label">
+                                                        {{ 'app.entity.Sav.form.history_sav'|trans }}
+                                                    </label>
+                                                    <div class="sonata-ba-field sonata-ba-field-inline-table">
+                                                        <div class="field-container">
+                                                                        <span>
+                                                                            <table class="table table-bordered">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th>{{ 'app.entity.SavHistory.field.history_date'|trans }}</th>
+                                                                                        <th>{{ 'app.entity.SavHistory.field.event'|trans }}</th>
+                                                                                        <th>{{ 'app.entity.SavHistory.field.user_name'|trans }}</th>
+                                                                                        <th>{{ 'app.entity.SavHistory.field.comment'|trans }}</th>
+                                                                                        <th>{{ 'app.entity.SavHistory.field.status_setting'|trans }}</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody class="sonata-ba-tbody ui-sortable">
+                                                                                    {% for savHistory in sav.savHistories %}
+                                                                                        <tr>
+                                                                                            <td class="control-group">
+                                                                                                {{ savHistory.historyDate|date('d/m/Y H:i') }}
+                                                                                            </td>
+                                                                                            <td class="control-group">
+                                                                                                {{ savHistory.event }}
+                                                                                            </td>
+                                                                                            <td class="control-group">
+                                                                                                {{ savHistory.userName }}
+                                                                                            </td>
+                                                                                            <td class="control-group">
+                                                                                                {{ savHistory.comment|raw }}
+                                                                                            </td>
+                                                                                            <td class="control-group">
+                                                                                                {{ savHistory.statusSetting }}
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    {% endfor %}
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" name="_tab" value="{{ app.request.query.get('_tab') }}">
+            </div>
+        </div>
+    {% endblock %}
+
+    {% block sonata_post_fieldsets %}
+</div>
+{% endblock %}

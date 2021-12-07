@@ -1,0 +1,67 @@
+{% extends '@EasyAdminExtension/default/layout.html.twig' %}
+
+{% block main %}
+    <div class="row" xmlns="http://www.w3.org/1999/html">
+        <div class="field-group col-12">
+            <fieldset>
+                <legend class="with-icon"><i class="fa fa-info"></i> {{ 'app.entity.Production.form.info'|trans() }}</legend>
+                <div class="row">
+                    <div class="col-12">
+                        {{ data.quantity }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        {{ data.user }}
+                        {{ data.supplier }}
+                    </div>
+                    <div class="col-6">
+                        <span id="article_id" data-article="{{ data.article.id }}" class="d-none"></span>
+                        {{ data.arrival }}
+                        {{ data.article }}
+                        {% for feature in data.features %}
+                            <p>{{ feature }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    {% for key, form in forms %}
+        {% form_theme form 'bootstrap_4_layout.html.twig' %}
+        {{ form_start(form) }}
+        <input type="hidden" name="production[production_id]" value="{{ key }}" />
+        <div class="row" xmlns="http://www.w3.org/1999/html">
+            <div class="field-group col-12">
+                <fieldset>
+                    <legend class="with-icon"><i class="fa fa-info"></i> {{ 'app.entity.Production.form.production'|trans() }}
+                    </legend>
+                    <div class="row">
+                        <div class="col-6">
+                            {{ form_row(form.serialNumber) }}
+                            <div class="d-none">
+                                {{ form_row(form.serialNumberLmeco) }}
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            {{ form_row(form.features) }}
+                            {{ form_row(form.comment) }}
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary action-save" id="new-production">
+            <span class="btn-label">{{ 'app.entity.Production.action.production.submit'|trans }}</span>
+        </button>
+        {{ form_widget(form._token) }}
+        {{ form_end(form) }}
+    {% endfor %}
+{% endblock %}
+
+{% block body_javascript %}
+    {{ parent() }}
+    <script type="text/javascript">
+        {% include 'ajax.js.twig' %}
+    </script>
+{% endblock %}

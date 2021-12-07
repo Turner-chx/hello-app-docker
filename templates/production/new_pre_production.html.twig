@@ -1,0 +1,65 @@
+{% extends '@EasyAdminExtension/default/layout.html.twig' %}
+
+{% form_theme form '@EasyAdminExtension/form/bootstrap_4.html.twig' %}
+
+{% block main %}
+    {{ form_start(form) }}
+        <div class="row" xmlns="http://www.w3.org/1999/html">
+            <div class="field-group col-12">
+                <fieldset>
+                    <legend class="with-icon"><i class="fa fa-info"></i> {{ 'app.entity.Production.form.info'|trans() }}</legend>
+                    <div class="row">
+                        <div class="col-12">
+                            {{ form_row(form.quantity) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            {{ form_row(form.createdAt) }}
+                            {{ form_row(form.user, { 'attr': {'data-action': path('getConnectedUser')}}) }}
+                            {{ form_row(form.supplier, {
+                                attr: {
+                                    'data-easyadmin-autocomplete-url' : path('easyadmin', {
+                                        action: 'autocomplete',
+                                        entity: 'Supplier',
+                                    })|raw }
+                            })
+                            }}
+                        </div>
+                        <div class="col-6">
+                            {{ form_row(form.article, {
+                                attr: {
+                                    'data-easyadmin-autocomplete-url' : path('easyadmin', {
+                                        action: 'autocomplete',
+                                        entity: 'Article',
+                                    })|raw }
+                            })
+                            }}
+                            {{ form_row(form.arrival, {
+                                attr: {
+                                    'data-easyadmin-autocomplete-url' : path('easyadmin', {
+                                        action: 'autocomplete',
+                                        entity: 'Arrival',
+                                    })|raw }
+                            })
+                            }}
+
+                            {{ form_row(form.features) }}
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary action-save">
+            <span class="btn-label">{{ 'app.entity.Production.action.pre_production.submit'|trans }}</span>
+        </button>
+    {{ form_widget(form._token) }}
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block body_javascript %}
+    {{ parent() }}
+    <script type="text/javascript">
+        {% include 'ajax.js.twig' %}
+    </script>
+{% endblock %}

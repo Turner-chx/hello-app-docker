@@ -1,0 +1,7 @@
+swiftmailer:
+  spool: { type: 'memory' }
+  transport: smtp
+  host: smtp-relay.sendinblue.com
+  username: ntoure@lamafrance.com
+  password: aYVkbsA1z8X6vLnK
+  port: 587

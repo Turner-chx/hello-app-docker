@@ -1,0 +1,11 @@
+sonata_user:
+  security_acl: true
+  manager_type: orm # can be orm or mongodb
+  class:
+    user: App\Entity\User
+    group: App\Entity\UserGroup
+  impersonating:
+    route: sonata_admin_dashboard
+  admin:
+    user:
+      class: App\Admin\UserAdmin

@@ -1,0 +1,33 @@
+{% extends 'mail/sav_base.html.twig' %}
+
+{% block overlay %}
+    <div class="sub-header">
+        <div class="overlay">
+            <h1>{{ 'app.mail.sav_send_link.name'|trans }}</h1>
+        </div>
+    </div>
+{% endblock overlay %}
+
+{% block container %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h2 class="bg-title">{{ 'app.entity.Sav.url_my_sav.success'|trans() }}</h2>
+                <p class="text-center">
+                    <strong>
+                        <span style="font-size: 20px;">{{ 'app.entity.Sav.url_my_sav.ref'|trans() }}</span>
+                        <span class="color-green">{{ savId }}</span>
+                    </strong>
+                </p>
+                <p class="text-center">
+                    <strong>
+                        <span style="font-size: 18px;">{{ 'app.entity.Sav.url_my_sav.url'|trans() }}</span>
+                    </strong>
+                </p>
+                <p class="text-center">
+                    <a href="https://intranet.lmecoproduction.fr/follow-my-sav/{{ typeClient }}/{{ code }}" target="_blank">https://intranet.lmecoproduction.fr/follow-my-sav/{{ typeClient }}/{{ code }}</a>
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock container %}

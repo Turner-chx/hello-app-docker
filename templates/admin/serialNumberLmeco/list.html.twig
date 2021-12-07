@@ -1,0 +1,14 @@
+{% extends '@EasyAdmin/default/list.html.twig' %}
+
+{% set _entity_config = easyadmin_entity(app.request.query.get('entity')) %}
+{% set actions = _entity_config.actions %}
+
+{% block new_action %}
+    {% for action in actions %}
+        <div class="button-action">
+            <a class="{{ action.css_class|default('btn btn-primary action-new') }}" href="{{ path(action.name) }}">
+                {{ action.label is defined and not _action.label is empty ? action.label|trans(_trans_parameters) }}
+            </a>
+        </div>
+    {% endfor %}
+{% endblock new_action %}

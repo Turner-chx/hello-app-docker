@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/iframe.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h2 class="bg-title">{{ 'app.entity.Sav.url_my_sav.success'|trans() }}</h2>
+                <p class="text-center">
+                    <strong>
+                        <span style="font-size: 20px;">{{ 'app.entity.Sav.url_my_sav.ref'|trans() }}</span>
+                        <span class="color-green">{{ savId }}</span>
+                    </strong>
+                </p>
+                <p class="text-center">
+                    <strong>
+                        <span style="font-size: 20px;">{{ 'app.entity.Sav.url_my_sav.url'|trans() }}</span>
+                    </strong>
+                </p>
+                <p class="text-center">
+                    <a href="https://intranet.lmecoproduction.fr/follow-my-sav/{{ typeClient }}/{{ code }}" target="_blank">https://intranet.lmecoproduction.fr/follow-my-sav/{{ typeClient }}/{{ code }}</a>
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        window.addEventListener('message', function (event) {
+            if (event.data === "FrameHeight") {
+
+                let body = document.body, html = document.documentElement;
+                let height = Math.max(body.scrollHeight, body.offsetHeight,
+                    html.clientHeight, html.scrollHeight, html.offsetHeight);
+                console.log(height);
+
+                event.source.postMessage({ "FrameHeight": height }, "*");
+            }
+        });
+    </script>
+{% endblock %}

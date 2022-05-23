@@ -55,7 +55,7 @@ final class SavAdmin extends AbstractAdmin
         return array_flip([
             'id' => 'ID',
             'createdAtFrench' => 'Date creation',
-            'overAt' => 'Date cloture',
+            'overAtFrench' => 'Date cloture',
             'family' => 'Famille',
             'replacementProduct' => 'Produits remplacement',
             'serialNumber1' => 'Num serie 1',

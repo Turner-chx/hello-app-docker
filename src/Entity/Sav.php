@@ -216,6 +216,11 @@ class Sav
         return null !== $this->getCreatedAt() ? $this->getCreatedAt()->format('d/m/Y') : '';
     }
 
+    public function getOverAtFrench(): string
+    {
+        return null !== $this->getOverAt() ? $this->getOverAt()->format('d/m/Y') : '';
+    }
+
     public function getCommentLight(): ?string
     {
         return strip_tags(str_replace([',', ';'], ' ', $this->getComment()));

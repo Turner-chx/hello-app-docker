@@ -25,6 +25,7 @@
         "sensio/framework-extra-bundle": "v5.6.1",
         "sonata-project/admin-bundle": "3.83.0",
         "sonata-project/doctrine-orm-admin-bundle": "3.26.0",
+        "sonata-project/exporter": "2.5.0",
         "sonata-project/intl-bundle": "2.10.0",
         "sonata-project/translation-bundle": "2.7.0",
         "sonata-project/user-bundle": "4.10.1",
@@ -66,8 +67,9 @@
         "symfony/debug-bundle": "^4.4",
         "symfony/maker-bundle": "^1.0",
         "symfony/phpunit-bridge": "^5.1",
+        "symfony/stopwatch": "4.4.*",
         "symfony/var-dumper": "^4.4",
-        "symfony/profiler-pack": "^1.0",
+        "symfony/web-profiler-bundle": "4.4.*",
         "symfony/web-server-bundle": "^4.4"
     },
     "config": {

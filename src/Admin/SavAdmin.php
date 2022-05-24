@@ -57,6 +57,7 @@ final class SavAdmin extends AbstractAdmin
             'createdAtFrench' => 'Date creation',
             'overAtFrench' => 'Date cloture',
             'family' => 'Famille',
+            'customerAddress' => 'Adresse client',
             'replacementProduct' => 'Produits remplacement',
             'serialNumber1' => 'Num serie 1',
             'serialNumber2' => 'Num serie 2',

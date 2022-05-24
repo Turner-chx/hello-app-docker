@@ -221,6 +221,12 @@ class Sav
         return null !== $this->getOverAt() ? $this->getOverAt()->format('d/m/Y') : '';
     }
 
+
+    public function getCustomerAddress(): string
+    {
+        return null !== $this->getCustomer() ? $this->getCustomer()->getPostalCode() . ' - ' . $this->getCustomer()->getCity() : 'Inconnue';
+    }
+
     public function getCommentLight(): ?string
     {
         return strip_tags(str_replace([',', ';'], ' ', $this->getComment()));

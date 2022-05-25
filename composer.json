@@ -22,6 +22,7 @@
         "helios-ag/fm-elfinder-bundle": "10.0.4",
         "myclabs/php-enum": "1.7.2",
         "oomphinc/composer-installers-extender": "2.0.0",
+        "phpoffice/phpspreadsheet": "^1.23",
         "sensio/framework-extra-bundle": "v5.6.1",
         "sonata-project/admin-bundle": "3.83.0",
         "sonata-project/doctrine-orm-admin-bundle": "3.26.0",

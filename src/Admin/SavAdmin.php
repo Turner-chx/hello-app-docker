@@ -172,14 +172,7 @@ final class SavAdmin extends AbstractAdmin
             ->add('savArticles', CollectionType::class, [
                 'by_reference' => false,
                 'type_options' => [
-                    'delete' => false,
-                    'delete_options' => [
-                        'type' => HiddenType::class,
-                        'type_options' => [
-                            'mapped' => false,
-                            'required' => false,
-                        ]
-                    ]
+                    'delete' => true,
                 ]
             ], [
                 'edit' => 'inline',
@@ -233,6 +226,7 @@ final class SavAdmin extends AbstractAdmin
                 },
             ])
             ->add('store', null, ['label' => 'app.entity.Sav.field.store', 'required' => false])
+            ->add('family', null, ['label' => 'app.entity.Sav.field.family', 'required' => false])
             ->add('comment', TextareaType::class, ['label' => 'app.entity.Sav.field.comment', 'required' => false])
             ->add('description', null, ['label' => 'app.entity.Sav.field.description', 'required' => false])
             ->add('user', null, ['label' => 'app.entity.Sav.field.user',])

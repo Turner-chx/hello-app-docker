@@ -7,10 +7,13 @@
             {% set tab_prefix = 'tab_' ~ admin.uniqid ~ '_' ~ random() %}
             {% set tab_query_index = app.request.query.get('_tab', 0)|split("_")|last %}
             <div class="nav-tabs-custom">
+
                 <ul class="nav nav-tabs" role="tablist">
                     {% set _tab_name_sav = tab_prefix ~ '_0' %}
                     {% set _tab_name_messagings = tab_prefix ~ '_1' %}
-                    {% set _tab_name_history = tab_prefix ~ '_2' %}
+                    {% set _tab_name_articles = tab_prefix ~ '_2' %}
+                    {% set _tab_name_history = tab_prefix ~ '_3' %}
+
                     <li{% if null == app.request.query.get('_tab') or (app.request.query.has('_tab') and app.request.query.get('_tab') == _tab_name_sav) or tab_query_index == '0' %} class="active"{% endif %}>
                         <a href="#{{ _tab_name_sav }}" class="changer-tab"
                            aria-controls="{{ _tab_name_sav }}" data-toggle="tab">
@@ -19,6 +22,7 @@
                                     class="fa fa-files-o"></i> {{ 'app.entity.Sav.form.sav'|trans }}
                         </a>
                     </li>
+
                     <li{% if app.request.query.has('_tab') and app.request.query.get('_tab') == _tab_name_messagings or tab_query_index == '1' %} class="active"{% endif %}>
                         <a href="#{{ _tab_name_messagings }}" class="changer-tab sav-edit-messagings"
                            aria-controls="{{ _tab_name_messagings }}" data-toggle="tab">
@@ -27,7 +31,17 @@
                                     class="fa fa-comments"></i> {{ 'app.entity.Sav.form.message'|trans }}
                         </a>
                     </li>
-                    <li{% if app.request.query.has('_tab') and app.request.query.get('_tab') == _tab_name_history or tab_query_index == '2' %} class="active"{% endif %}>
+
+                    <li{% if app.request.query.has('_tab') and app.request.query.get('_tab') == _tab_name_articles or tab_query_index == '2' %} class="active"{% endif %}>
+                        <a href="#{{ _tab_name_articles }}" class="changer-tab"
+                           aria-controls="{{ _tab_name_articles }}" data-toggle="tab">
+                            <i class="fa fa-exclamation-circle has-errors hide"
+                               aria-hidden="true"></i><i
+                                    class="fa fa-shopping-basket"></i> {{ 'app.entity.Sav.form.products'|trans }}
+                        </a>
+                    </li>
+
+                    <li{% if app.request.query.has('_tab') and app.request.query.get('_tab') == _tab_name_history or tab_query_index == '3' %} class="active"{% endif %}>
                         <a href="#{{ _tab_name_history }}" class="changer-tab"
                            aria-controls="{{ _tab_name_history }}" data-toggle="tab">
                             <i class="fa fa-exclamation-circle has-errors hide"
@@ -35,8 +49,11 @@
                                     class="fa fa-history"></i> {{ 'app.entity.Sav.form.history_sav'|trans }}
                         </a>
                     </li>
+
                 </ul>
+
                 <div class="tab-content sav-edit" data-sav-id="{{ objectId }}">
+
                     <div class="tab-pane fade {% if null == app.request.query.get('_tab') or (app.request.query.has('_tab') and app.request.query.get('_tab') == _tab_name_sav) or tab_query_index == '0' %}in active{% endif %}"
                          id="{{ _tab_name_sav }}">
                         <div class="box-body container-fluid">
@@ -147,6 +164,7 @@
                                         </div>
                                         <div class="box-body">
                                             <div class="sonata-ba-collapsed-fields">
+                                                {{ form_row(form.family) }}
                                                 <div class="col-md-7">
                                                     <div class="sonata-ba-collapsed-fields">
                                                         <div class="form-group">
@@ -286,6 +304,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="tab-pane fade {% if app.request.query.has('_tab') and app.request.query.get('_tab') == _tab_name_messagings or tab_query_index == '1' %}in active{% endif %}"
                          id="{{ _tab_name_messagings }}">
                         <div class="box-body container-fluid">
@@ -361,7 +380,19 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade {% if app.request.query.has('_tab') and app.request.query.get('_tab') == _tab_name_history or tab_query_index == '2' %}in active{% endif %}"
+
+                    <div class="tab-pane fade {% if app.request.query.has('_tab') and app.request.query.get('_tab') == _tab_name_articles or tab_query_index == '2' %}in active{% endif %}"
+                         id="{{ _tab_name_articles }}">
+                            <div class="box-body container-fluid">
+                                <div class="sonata-ba-collapsed-fields">
+                                    <div class="col-md-12">
+                                        {{ form_row(form.savArticles) }}
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+
+                    <div class="tab-pane fade {% if app.request.query.has('_tab') and app.request.query.get('_tab') == _tab_name_history or tab_query_index == '3' %}in active{% endif %}"
                          id="{{ _tab_name_history }}">
                         <div class="box-body container-fluid">
                             <div class="sonata-ba-collapsed-fields">
@@ -424,6 +455,7 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
                 <input type="hidden" name="_tab" value="{{ app.request.query.get('_tab') }}">
             </div>

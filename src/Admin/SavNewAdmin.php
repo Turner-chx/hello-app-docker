@@ -68,8 +68,9 @@ final class SavNewAdmin extends AbstractAdmin
         return array_flip([
             'id' => 'ID',
             'createdAtFrench' => 'Date creation',
-            'overAt' => 'Date cloture',
+            'overAtFrench' => 'Date cloture',
             'family' => 'Famille',
+            'customerAddress' => 'Adresse client',
             'replacementProduct' => 'Produits remplacement',
             'serialNumber1' => 'Num serie 1',
             'serialNumber2' => 'Num serie 2',
@@ -247,6 +248,7 @@ final class SavNewAdmin extends AbstractAdmin
             ->add('store', null, ['label' => 'app.entity.Sav.field.store', 'required' => false])
             ->add('comment', TextareaType::class, ['label' => 'app.entity.Sav.field.comment', 'required' => false])
             ->add('description', null, ['label' => 'app.entity.Sav.field.description', 'required' => false])
+            ->add('family', null, ['label' => 'app.entity.Sav.field.family', 'required' => false])
             ->add('user', null, ['label' => 'app.entity.Sav.field.user',])
             ->add('dealer', ModelAutocompleteType::class, [
                 'class' => Dealer::class,

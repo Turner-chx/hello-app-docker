@@ -51,6 +51,7 @@ final class ArticleAdminController extends CRUDController
                     $brandLama = substr(trim($productType), -2);
                     $productTypeLama = substr(trim($productType) ?? '', 0, 3);
                     $gammeLama = trim($productItem[3]);
+                    $active = trim($productItem[6]) === 'Oui';
                     $brand = $manager->getRepository(Brand::class)
                         ->findOneBy([
                             'codeLama' => $brandLama
@@ -99,7 +100,7 @@ final class ArticleAdminController extends CRUDController
                         $article->setDesignation($des);
                         $article->setDesignationAbridged($desAbr);
                         $article->setEan($ean);
-                        $article->setStatus(true);
+                        $article->setStatus($active);
                         if (null !== $gamme) {
                             $article->setGamme($gamme);
                         }

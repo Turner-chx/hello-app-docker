@@ -78,5 +78,15 @@ final class DealerAdmin extends AbstractAdmin
     {
         $collection->remove('create');
         $collection->remove('delete');
+        $collection->add('importDealers');
+    }
+
+    public function configureActionButtons($action, $object = null): array
+    {
+        $list = parent::configureActionButtons($action, $object);
+
+        $list['import']['template'] = 'admin/dealer/action/import.html.twig';
+
+        return $list;
     }
 }

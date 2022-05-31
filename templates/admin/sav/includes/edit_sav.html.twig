@@ -32,14 +32,14 @@
                         </a>
                     </li>
 
-                    <li{% if app.request.query.has('_tab') and app.request.query.get('_tab') == _tab_name_articles or tab_query_index == '2' %} class="active"{% endif %}>
-                        <a href="#{{ _tab_name_articles }}" class="changer-tab"
-                           aria-controls="{{ _tab_name_articles }}" data-toggle="tab">
-                            <i class="fa fa-exclamation-circle has-errors hide"
-                               aria-hidden="true"></i><i
-                                    class="fa fa-shopping-basket"></i> {{ 'app.entity.Sav.form.products'|trans }}
-                        </a>
-                    </li>
+{#                    <li{% if app.request.query.has('_tab') and app.request.query.get('_tab') == _tab_name_articles or tab_query_index == '2' %} class="active"{% endif %}>#}
+{#                        <a href="#{{ _tab_name_articles }}" class="changer-tab"#}
+{#                           aria-controls="{{ _tab_name_articles }}" data-toggle="tab">#}
+{#                            <i class="fa fa-exclamation-circle has-errors hide"#}
+{#                               aria-hidden="true"></i><i#}
+{#                                    class="fa fa-shopping-basket"></i> {{ 'app.entity.Sav.form.products'|trans }}#}
+{#                        </a>#}
+{#                    </li>#}
 
                     <li{% if app.request.query.has('_tab') and app.request.query.get('_tab') == _tab_name_history or tab_query_index == '3' %} class="active"{% endif %}>
                         <a href="#{{ _tab_name_history }}" class="changer-tab"
@@ -165,6 +165,7 @@
                                         <div class="box-body">
                                             <div class="sonata-ba-collapsed-fields">
                                                 {{ form_row(form.family) }}
+                                                {{ form_row(form.savArticles) }}
                                                 <div class="col-md-7">
                                                     <div class="sonata-ba-collapsed-fields">
                                                         <div class="form-group">
@@ -381,28 +382,28 @@
                         </div>
                     </div>
 
-                    <div class="tab-pane fade {% if app.request.query.has('_tab') and app.request.query.get('_tab') == _tab_name_articles or tab_query_index == '2' %}in active{% endif %}"
-                         id="{{ _tab_name_articles }}">
-                        <div class="box-body container-fluid">
-                            <div class="sonata-ba-collapsed-fields">
-                                <div class="col-md-12">
-                                    <div class="box box-primary">
-                                        <div class="box-body">
-                                            <div class="sonata-ba-collapsed-fields">
-                                                <div class="form-group">
-                                                    <div class="sonata-ba-field sonata-ba-field-inline-table">
-                                                        <div class="field-container">
-                                                            {{ form_row(form.savArticles) }}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+{#                    <div class="tab-pane fade {% if app.request.query.has('_tab') and app.request.query.get('_tab') == _tab_name_articles or tab_query_index == '2' %}in active{% endif %}"#}
+{#                         id="{{ _tab_name_articles }}">#}
+{#                        <div class="box-body container-fluid">#}
+{#                            <div class="sonata-ba-collapsed-fields">#}
+{#                                <div class="col-md-12">#}
+{#                                    <div class="box box-primary">#}
+{#                                        <div class="box-body">#}
+{#                                            <div class="sonata-ba-collapsed-fields">#}
+{#                                                <div class="form-group">#}
+{#                                                    <div class="sonata-ba-field sonata-ba-field-inline-table">#}
+{#                                                        <div class="field-container">#}
+{#                                                            {{ form_row(form.savArticles) }}#}
+{#                                                        </div>#}
+{#                                                    </div>#}
+{#                                                </div>#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
 
                     <div class="tab-pane fade {% if app.request.query.has('_tab') and app.request.query.get('_tab') == _tab_name_history or tab_query_index == '3' %}in active{% endif %}"
                          id="{{ _tab_name_history }}">

@@ -16,6 +16,7 @@ use App\Form\MyCLabsEnumType;
 use App\Handler\RequestForSavHandler;
 use App\Library\Autocompleter;
 use App\Mailer\Mailer;
+use Doctrine\ORM\EntityRepository;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -228,7 +229,18 @@ final class SavAdmin extends AbstractAdmin
                 },
             ])
             ->add('store', null, ['label' => 'app.entity.Sav.field.store', 'required' => false])
-            ->add('family', null, ['label' => 'app.entity.Sav.field.family', 'required' => false])
+            ->add('family', EntityType::class, [
+                'label' => 'app.entity.Sav.field.family',
+                'required' => false,
+                'class' => ProductType::class,
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('p');
+                },
+                'choice_label' => 'codeLama',
+                'choice_value' => function ($codeLama) {
+                    return $codeLama;
+                },
+            ])
             ->add('comment', TextareaType::class, ['label' => 'app.entity.Sav.field.comment', 'required' => false])
             ->add('description', null, ['label' => 'app.entity.Sav.field.description', 'required' => false])
             ->add('user', null, ['label' => 'app.entity.Sav.field.user',])
@@ -291,14 +303,23 @@ final class SavAdmin extends AbstractAdmin
         if (null === $em) {
             return;
         }
-        foreach ($sav->getSavArticles() as $savArticle) {
-            $article = $savArticle->getArticle();
-            if (null !== $article) {
-                $family = $article->getProductType();
-                if (null !== $family) {
-                    $sav->setFamily($family->getCodeLama());
+        if (null === $sav->getFamily()) {
+            foreach ($sav->getSavArticles() as $savArticle) {
+                $article = $savArticle->getArticle();
+                if (null !== $article) {
+                    $family = $article->getProductType();
+                    if (null !== $family) {
+                        $sav->setFamily($family->getCodeLama());
+                    }
                 }
             }
+        }
+        foreach ($sav->getSavArticles() as $savArticle) {
+            $article = $savArticle->getArticle();
+            if (null === $article || null !== $savArticle->getId()) {
+                continue;
+            }
+            $sav->addReplacementArticle($article);
         }
         foreach ($sav->getMessagings() as $message) {
             if (null === $message->getSender()) {

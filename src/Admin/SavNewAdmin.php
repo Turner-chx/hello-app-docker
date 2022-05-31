@@ -16,6 +16,7 @@ use App\Form\MyCLabsEnumType;
 use App\Handler\RequestForSavHandler;
 use App\Library\Autocompleter;
 use App\Mailer\Mailer;
+use Doctrine\ORM\EntityRepository;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -70,8 +71,10 @@ final class SavNewAdmin extends AbstractAdmin
             'createdAtFrench' => 'Date creation',
             'overAtFrench' => 'Date cloture',
             'family' => 'Famille',
-            'customerAddress' => 'Adresse client',
+            'customerAddressPostCode' => 'Code postal client',
+            'customerAddressCity' => 'Ville client',
             'replacementProduct' => 'Produits remplacement',
+            'replacementProductName' => 'Designations produits remplacement',
             'serialNumber1' => 'Num serie 1',
             'serialNumber2' => 'Num serie 2',
             'natureSettings' => 'Types de defaut',
@@ -185,14 +188,7 @@ final class SavNewAdmin extends AbstractAdmin
             ->add('savArticles', CollectionType::class, [
                 'by_reference' => false,
                 'type_options' => [
-                    'delete' => false,
-                    'delete_options' => [
-                        'type' => HiddenType::class,
-                        'type_options' => [
-                            'mapped' => false,
-                            'required' => false,
-                        ]
-                    ]
+                    'delete' => true,
                 ]
             ], [
                 'edit' => 'inline',
@@ -248,7 +244,18 @@ final class SavNewAdmin extends AbstractAdmin
             ->add('store', null, ['label' => 'app.entity.Sav.field.store', 'required' => false])
             ->add('comment', TextareaType::class, ['label' => 'app.entity.Sav.field.comment', 'required' => false])
             ->add('description', null, ['label' => 'app.entity.Sav.field.description', 'required' => false])
-            ->add('family', null, ['label' => 'app.entity.Sav.field.family', 'required' => false])
+            ->add('family', EntityType::class, [
+                'label' => 'app.entity.Sav.field.family',
+                'required' => false,
+                'class' => ProductType::class,
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('p');
+                },
+                'choice_label' => 'codeLama',
+                'choice_value' => function ($codeLama) {
+                    return $codeLama;
+                },
+            ])
             ->add('user', null, ['label' => 'app.entity.Sav.field.user',])
             ->add('dealer', ModelAutocompleteType::class, [
                 'class' => Dealer::class,
@@ -309,14 +316,23 @@ final class SavNewAdmin extends AbstractAdmin
         if (null === $em) {
             return;
         }
-        foreach ($sav->getSavArticles() as $savArticle) {
-            $article = $savArticle->getArticle();
-            if (null !== $article) {
-                $family = $article->getProductType();
-                if (null !== $family) {
-                    $sav->setFamily($family->getCodeLama());
+        if (null === $sav->getFamily()) {
+            foreach ($sav->getSavArticles() as $savArticle) {
+                $article = $savArticle->getArticle();
+                if (null !== $article) {
+                    $family = $article->getProductType();
+                    if (null !== $family) {
+                        $sav->setFamily($family->getCodeLama());
+                    }
                 }
             }
+        }
+        foreach ($sav->getSavArticles() as $savArticle) {
+            $article = $savArticle->getArticle();
+            if (null === $article || null !== $savArticle->getId()) {
+                continue;
+            }
+            $sav->addReplacementArticle($article);
         }
         foreach ($sav->getMessagings() as $message) {
             if (null === $message->getSender()) {

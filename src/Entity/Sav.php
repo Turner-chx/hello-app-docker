@@ -144,6 +144,7 @@ class Sav
     /**
      * @ORM\ManyToMany(targetEntity=Article::class, inversedBy="savs")
      * @ORM\JoinTable(name="replacement_article")
+     * @ORM\OrderBy({"id" = "DESC"})
      */
     private $replacementArticles;
 

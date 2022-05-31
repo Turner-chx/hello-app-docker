@@ -222,9 +222,24 @@ class Sav
     }
 
 
-    public function getCustomerAddress(): string
+    public function getCustomerAddressPostCode(): string
     {
-        return null !== $this->getCustomer() ? $this->getCustomer()->getPostalCode() . ' - ' . $this->getCustomer()->getCity() : 'Inconnue';
+        $customer = $this->getCustomer();
+        if (null === $customer) {
+            return 'Inconnue';
+        }
+        $postCode = $customer->getPostalCode();
+        return $postCode ?? 'Inconnue';
+    }
+
+    public function getCustomerAddressCity(): string
+    {
+        $customer = $this->getCustomer();
+        if (null === $customer) {
+            return 'Inconnue';
+        }
+        $city = $customer->getCity();
+        return $city ?? 'Inconnue';
     }
 
     public function getCommentLight(): ?string
@@ -271,6 +286,15 @@ class Sav
         $products = [];
         foreach ($this->getReplacementArticles() as $replacementArticle) {
             $products[] = $replacementArticle->getReference();
+        }
+        return implode('|', $products);
+    }
+
+    public function getReplacementProductName(): ?string
+    {
+        $products = [];
+        foreach ($this->getReplacementArticles() as $replacementArticle) {
+            $products[] = $replacementArticle->getDesignation();
         }
         return implode('|', $products);
     }

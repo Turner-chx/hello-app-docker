@@ -126,7 +126,7 @@ class Mailer
         try {
             $messageMessage = (new Swift_Message($this->translator->trans('app.mail.sav_message.new_message', ['%savId%' => $sav->getId()])))
                 ->setFrom([
-                    'sav@lamafrance.com' => 'SAVCARTOUCHES'
+                    'no-reply@savcartouches.com' => 'SAVCARTOUCHES'
                 ])
                 ->setTo(strtolower($to))
                 ->setBody(

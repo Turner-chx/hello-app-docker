@@ -25,11 +25,12 @@ final class ArticleAdminController extends CRUDController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $dateStart = date('d/m/Y H:i:s');
             $data = $request->files->get('file');
+            $i = 0;
+            $batchSize = 500;
+            $manager = $this->getDoctrine()->getManager();
             if (isset($data['file'])) {
-                $i = 0;
-                $batchSize = 500;
-                $manager = $this->getDoctrine()->getManager();
                 /** @var UploadedFile $uploadedFile */
                 $uploadedFile = $data['file']['file'];
                 $readerSpreadsheet = IOFactory::createReader('Xlsx');
@@ -120,7 +121,8 @@ final class ArticleAdminController extends CRUDController
                 }
             }
             $manager->flush();
-            $this->addFlash('success', $i . ' produits mis à jour');
+            $dateEnd = date('d/m/Y H:i:s');
+            $this->addFlash('success', $i . ' produits mis à jour entre ' . $dateStart . ' et ' . $dateEnd);
             return new RedirectResponse($this->admin->generateUrl('list'));
         }
 

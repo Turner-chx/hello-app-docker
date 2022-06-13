@@ -10,6 +10,7 @@ namespace App\EventListeners;
 
 
 use App\Entity\Article;
+use App\Entity\Dealer;
 use App\Entity\Messaging;
 use App\Entity\Sav;
 use App\Entity\SavHistory;
@@ -79,7 +80,7 @@ class DoctrineSubscriber implements EventSubscriber
     public function postUpdate(LifecycleEventArgs $args)
     {
         $entity = $args->getObject();
-        if (!($entity instanceof Article)) {
+        if (!($entity instanceof Article) && !($entity instanceof Dealer)) {
             $this->em->flush();
         }
     }

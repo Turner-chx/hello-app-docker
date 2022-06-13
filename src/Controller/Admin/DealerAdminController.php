@@ -53,7 +53,7 @@ final class DealerAdminController extends CRUDController
                     $createdAt = new \DateTime();
                     $email = trim($dealerItem[16]);
 
-                    $dealer = $manager->getRepository(Dealer::class)->findOneBy(['email' => $email]);
+                    $dealer = $manager->getRepository(Dealer::class)->findOneBy(['dealerCode' => $dealerCode]);
 
                     if (null === $dealer) {
                         $dealer = new Dealer();
@@ -69,7 +69,6 @@ final class DealerAdminController extends CRUDController
                     $dealer->setPostalCode($postalCode);
                     $dealer->setDealerCode($dealerCode);
                     $dealer->setEmail($email);
-                    $dealer->setSalesmanName($salesmanName);
 
                     $manager->persist($dealer);
 

@@ -20,8 +20,8 @@ class FileType extends AbstractType
                 'constraints' => [
                     new File([
                         'mimeTypes' => [
-                            'text/csv',
-                            'text/plain',
+                            'text/xlsx',
+                            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                             'message/news'
                         ]
                     ])

@@ -337,6 +337,13 @@ class Sav
     public function prePersist(): void
     {
         $this->updatedAt = DateTime::createFromFormat('Y-m-d H:i:s', date('Y-m-d H:i:s'));
+        foreach ($this->getSavArticles() as $savArticle) {
+            $article = $savArticle->getArticle();
+            if (null === $article || null !== $savArticle->getId()) {
+                continue;
+            }
+            $this->addReplacementArticle($article);
+        }
     }
 
     public function getId(): ?int

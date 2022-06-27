@@ -3,5 +3,5 @@ swiftmailer:
   transport: smtp
   host: smtp-relay.sendinblue.com
   username: ntoure@lamafrance.com
-  password: aYVkbsA1z8X6vLnK
+  password: 7f12pnB6PxJKL3Mj
   port: 587

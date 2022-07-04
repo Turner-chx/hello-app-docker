@@ -1,0 +1,68 @@
+{% extends 'admin/standard_layout.html.twig' %}
+
+{% block title %}{{ 'title_search_results'|trans({'%query%': query}, 'SonataAdminBundle') }}{% endblock %}
+{% block breadcrumb %}{% endblock %}
+{% block content %}
+    <h2 class="page-header">{{ 'title_search_results'|trans({'%query%': query}, 'SonataAdminBundle') }}</h2>
+
+    {% if query is defined and query is not same as(false) %}
+        {% set count = 0 %}
+        <div class="row" data-masonry='{ "itemSelector": ".search-box-item" }'>
+            {% set display = group.roles is empty or is_granted(sonata_config.getOption('role_super_admin')) or group.roles|filter(role => is_granted(role))|length > 0 %}
+            {% if display %}
+                {% for admin in group.items %}
+                    {% set count = count + 1 %}
+                    {% if admin.hasRoute('create') and admin.hasAccess('create') or admin.hasRoute('list') and admin.hasAccess('list') %}
+                        <div class="col-lg-4 col-md-6 search-box-item sonata-search-result-show">
+                            <div class="box box-solid sonata-search-result-show">
+                                <div class="box-header with-border sonata-search-result-show">
+                                    {% set icon = group.icon|default('') %}
+                                    {{ icon|raw }}
+                                    <h3 class="box-title">
+                                        {{ admin.label|trans({}, admin.translationdomain) }}
+                                    </h3>
+
+                                    <div class="box-tools pull-right">
+                                        {% if results and results|length > 0 %}
+                                            <span class="badge">{{ results|length }}</span>
+                                        {% elseif admin.hasRoute('create') and admin.hasAccess('create') %}
+                                            <a href="{{ admin.generateUrl('create') }}" class="btn btn-box-tool">
+                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                            </a>
+                                        {% endif %}
+                                        {% if admin.hasRoute('list') and admin.hasAccess('list') %}
+                                            <a href="{{ admin.generateUrl('list') }}" class="btn btn-box-tool">
+                                                <i class="fa fa-list" aria-hidden="true"></i>
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {% if results and results|length > 0 %}
+                                    <div class="box-body no-padding">
+                                        <ul class="nav nav-stacked sonata-search-result-list">
+                                            {% for result in results %}
+                                                {% set link = admin.getSearchResultLink(result) %}
+                                                {% if link %}
+                                                    <li><a href="{{ link }}">{{ admin.toString(result) }}</a></li>
+                                                {% else %}
+                                                    <li><a>{{ admin.toString(result) }}</a></li>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                {% else %}
+                                    <div class="box-body">
+                                        <p>
+                                            <em>{{ 'no_results_found'|trans({}, 'SonataAdminBundle') }}</em>
+                                        </p>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </div>
+    {% endif %}
+
+{% endblock %}

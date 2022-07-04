@@ -39,6 +39,10 @@ sav_success:
 sav_email_sent:
   path: /sav/email-sent
   controller: App\Controller\Web\SavController:emailSent
+
+sav_search:
+  path: /admin/sav-search
+  controller: App\Controller\Web\SearchController:savSearch
 ########### END ROUTING ##########
 
 ########### AJAX ##########

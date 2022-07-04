@@ -60,6 +60,56 @@ class SavRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function searchSav(string $q)
+    {
+        return $this->createQueryBuilder('s')
+            ->leftJoin('s.customer', 'c')
+            ->leftJoin('s.user', 'u')
+            ->leftJoin('s.source', 'so')
+            ->leftJoin('s.dealer', 'd')
+            ->leftJoin('s.statusSetting', 'ss')
+            ->leftJoin('s.savArticles', 'sa')
+            ->leftJoin('sa.article', 'a')
+            ->leftJoin('s.replacementArticles', 'ra')
+            ->where('s.id LIKE :q')
+            ->orWhere('s.description LIKE :q')
+            ->orWhere('s.serialNumberCustomer LIKE :q')
+            ->orWhere('s.comment LIKE :q')
+            ->orWhere('s.clientType LIKE :q')
+            ->orWhere('s.store LIKE :q')
+            ->orWhere('s.dealerReference LIKE :q')
+            ->orWhere('s.divaltoNumber LIKE :q')
+            ->orWhere('s.carrierCode LIKE :q')
+            ->orWhere('s.customerPrinter LIKE :q')
+            ->orWhere('s.jiraLink LIKE :q')
+            ->orWhere('s.secretCode LIKE :q')
+            ->orWhere('s.family LIKE :q')
+            ->orWhere('c.name LIKE :q')
+            ->orWhere('c.email LIKE :q')
+            ->orWhere('c.phoneNumber LIKE :q')
+            ->orWhere('c.customerContact LIKE :q')
+            ->orWhere('c.postalCode LIKE :q')
+            ->orWhere('c.city LIKE :q')
+            ->orWhere('u.email LIKE :q')
+            ->orWhere('u.username LIKE :q')
+            ->orWhere('u.username LIKE :q')
+            ->orWhere('so.name LIKE :q')
+            ->orWhere('d.email LIKE :q')
+            ->orWhere('d.name LIKE :q')
+            ->orWhere('d.dealerCode LIKE :q')
+            ->orWhere('ss.setting LIKE :q')
+            ->orWhere('sa.serialNumber LIKE :q')
+            ->orWhere('sa.serialNumber2 LIKE :q')
+            ->orWhere('a.reference LIKE :q')
+            ->orWhere('a.designation LIKE :q')
+            ->orWhere('ra.reference LIKE :q')
+            ->orWhere('ra.designation LIKE :q')
+            ->setParameter('q', '%' . $q . '%')
+            ->getQuery()
+            ->getResult();
+    }
+
+
     // /**
     //  * @return Sav[] Returns an array of Sav objects
     //  */

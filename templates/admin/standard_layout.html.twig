@@ -244,8 +244,8 @@ file that was distributed with this source code.
                     {% block sonata_side_nav %}
                         {% block sonata_sidebar_search %}
                             {% if sonata_config.getOption('search') %}
-                                <form action="{{ path('sonata_admin_search') }}" method="GET" class="sidebar-form"
-                                      role="search">
+{#                                <form action="{{ path('sonata_admin_search') }}" method="GET" class="sidebar-form" role="search">#}
+                                <form action="{{ path('sav_search') }}" method="GET" class="sidebar-form" role="search">
                                     <div class="input-group custom-search-form">
                                         <input type="text" onkeyup="javascript:this.value=this.value.toUpperCase();"
                                                name="q" value="{{ app.request.get('q') }}" class="form-control"

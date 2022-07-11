@@ -105,6 +105,7 @@ class SavRepository extends ServiceEntityRepository
             ->orWhere('ra.reference LIKE LOWER(:q)')
             ->orWhere('ra.designation LIKE LOWER(:q)')
             ->setParameter('q', '%' . strtolower($q) . '%')
+            ->orderBy('s.createdAt', 'DESC')
             ->getQuery()
             ->getResult();
     }

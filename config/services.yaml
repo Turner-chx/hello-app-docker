@@ -136,6 +136,11 @@ services:
       - { name: 'console.command', command: 'app:test' }
     arguments: ['@doctrine.orm.entity_manager']
 
+  App\Command\AppSelectOldSavCommand:
+    tags:
+      - { name: 'console.command', command: 'app:Select:old:sav' }
+    arguments: [ '@doctrine.orm.entity_manager' ]
+
   App\Command\AppUpdateArticlesCommand:
     tags:
       - { name: 'console.command', command: 'app:update:articles' }

@@ -2,9 +2,7 @@
 
 namespace App\Command;
 
-use App\Entity\Sav;
-use App\Entity\SavHistory;
-use App\Entity\StatusSetting;
+use App\Handler\SelectOldSavHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,10 +13,12 @@ class AppSelectOldSavCommand extends Command
     protected static $defaultName = 'app:selectOldSav';
 
     protected $em;
+    private $selectOldSavHandler;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em,SelectOldSavHandler $selectOldSavHandler )
     {
         $this->em = $em;
+        $this->selectOldSavHandler = $selectOldSavHandler;
 
         parent::__construct();
     }
@@ -30,28 +30,6 @@ class AppSelectOldSavCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $manager = $this->em;
-
-        $allSavHistory = $manager->getRepository(SavHistory::class)->findAll();
-
-        $statusEnAttente = $manager->getRepository(StatusSetting::class)->findOneBy([
-            'id' => 2
-        ]);
-        $statusResolute = $manager->getRepository(StatusSetting::class)->findOneBy([
-            'id' => 3
-        ]);
-
-        $date = new \DateTime();
-        foreach ($allSavHistory as $savHistory){
-            $dateInterval = date_diff($date, $savHistory->getHistoryDate());
-            if (($savHistory->getStatusSetting() !== null) && $savHistory->getStatusSetting() === $statusEnAttente->getSetting() && $dateInterval->days >= 30) {
-                $sav = $manager->getRepository(Sav::class)->findOneBy([
-                    'id' => $savHistory->getId()
-                ]);
-                $sav->setStatusSetting($statusResolute);
-                $manager->persist($sav);
-            }
-        }
-        $manager->flush();
+        $this->selectOldSavHandler->selectOldSav();
     }
 }

@@ -29,6 +29,7 @@ app:
       new: Création
       replace: Remplacement
       evolution: Évolution
+      endclosing: Clôture automatique
     role:
       supplier: Rôle sous-traitant
       operator: Rôle opétateur

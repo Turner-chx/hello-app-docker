@@ -275,6 +275,16 @@ final class SavAdmin extends AbstractAdmin
         $collection->add('new_sav', 'is-new-sav');
         $collection->add('send_to_divalto', 'send-to-divalto/' . $this->getRouterIdParameter());
         $collection->add('send_mail_commercial', 'send-mail-sav-commercial/' . $this->getRouterIdParameter());
+        $collection->add('endClosing');
+    }
+
+    public function configureActionButtons($action, $object = null)
+    {
+        $list = parent::configureActionButtons($action, $object);
+
+        $list['endClosing']['template'] = 'admin/sav/action/endClosing.html.twig';
+
+        return $list;
     }
 
     public function prePersist($object): void

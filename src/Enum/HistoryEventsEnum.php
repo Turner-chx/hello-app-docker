@@ -17,13 +17,14 @@ class HistoryEventsEnum extends Enum implements EnumTranslatable
         self::EDIT => 'app.enum.history_event.edit',
         self::NEW => 'app.enum.history_event.new',
         self::REPLACE => 'app.enum.history_event.replace',
-        self::EVOLUTION => 'app.enum.history_event.evolution'
-
+        self::EVOLUTION => 'app.enum.history_event.evolution',
+        self::ENDCLOSING => 'app.enum.history_event.endclosing',
     ];
     public const EDIT = 'Modification';
     public const NEW = 'Création';
     public const REPLACE = 'Remplacement';
     public const EVOLUTION = 'Évolution';
+    public const ENDCLOSING = 'Clôture automatique';
 
     public function getTranslationKey()
     {

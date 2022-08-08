@@ -7,6 +7,9 @@ namespace App\Controller\Admin;
 use App\Divalto\DivaltoHandler;
 use App\Entity\Article;
 use App\Entity\Sav;
+use App\Entity\SavHistory;
+use App\Entity\StatusSetting;
+use App\Enum\HistoryEventsEnum;
 use App\Mailer\Mailer;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -154,4 +157,53 @@ final class SavAdminController extends CRUDController
         return new RedirectResponse($this->admin->generateUrl('edit', ['id' => $id]));
     }
 
+    public function endClosingAction(){
+
+        $statusEnAttente = $this->getDoctrine()->getRepository(StatusSetting::class)->findOneBy([
+            'setting' => 'En attente'
+        ]);
+        if (null === $statusEnAttente) {
+            return new RedirectResponse($this->admin->generateUrl('list'));
+        }
+
+        $statusResolute = $this->getDoctrine()->getRepository(StatusSetting::class)->findOneBy([
+            'setting' => 'Résolu'
+        ]);
+        if (null === $statusResolute) {
+            return new RedirectResponse($this->admin->generateUrl('list'));
+        }
+
+        $allSav = $this->getDoctrine()->getRepository(Sav::class)->findBy([
+            'statusSetting' => $statusEnAttente->getId()
+        ]);
+
+        $date = new \DateTime();
+        foreach ($allSav as $sav){
+            $savHistories = $sav->getSavHistories();
+            $lastHistory = null;
+            foreach ($savHistories as $savHistory ){
+                if ($lastHistory === null) {
+                    $lastHistory = $savHistory;
+                } else if ($lastHistory->getId() < $savHistory->getId()){
+                    $lastHistory = $savHistory;
+                }
+            }
+            $dateInterval = date_diff($date, $lastHistory->getHistoryDate());
+            if ($dateInterval->days >= 30 && ($lastHistory->getStatusSetting() !== null) && $sav->getStatusSetting()->getSetting() === $statusEnAttente->getSetting()) {
+                $sav->setStatusSetting($statusResolute);
+                $this->getDoctrine()->getManager()->persist($sav);
+                $this->getDoctrine()->getManager()->flush();
+
+                $allSavHistory2 = $this->getDoctrine()->getRepository(SavHistory::class)->findBy([
+                    'sav' => $lastHistory->getSav(),
+                ]);
+                $lastHistory = end($allSavHistory2);
+                $lastHistory->setEvent(HistoryEventsEnum::ENDCLOSING);
+
+                $this->getDoctrine()->getManager()->persist($lastHistory);
+                $this->getDoctrine()->getManager()->flush();
+            }
+        }
+        return new RedirectResponse($this->admin->generateUrl('list'));
+    }
 }
